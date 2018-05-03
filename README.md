@@ -1,2 +1,2 @@
-# Soot
+# Shoot
 Game for windows
