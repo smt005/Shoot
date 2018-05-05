@@ -95,96 +95,100 @@ void GameTerrain::initDraw()
 
 void GameTerrain::initCallback()
 {
-	//this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
-	/*this->setCallback(EventCallback::BUTTON_UP, Function(pressButton));
-	this->setCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
-	this->setCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
-	
-	Callback::_hintObject = this;*/
+	addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
+	addCallback(EventCallback::BUTTON_UP, Function(pressButton));
+	addCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
+	addCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
+}
+
+bool GameTerrain::close(void* data)
+{
+	App::close();
+	return true;
 }
 
 bool GameTerrain::rotateCamera(void *data)
 {
-	//Camera::current.rotate(Callback::_vector);
+	Camera::current.rotate(Callback::vector);
 	return true;
 }
 
 bool GameTerrain::pressButton(void *data)
 {
-	/*if (_charButtonUp == VK_ESCAPE)
+	if (Callback::charButtonUp == VK_ESCAPE)
 	{
 		App::close();
 		return true;
 	}
 
-	if (_charButtonUp == VK_SPACE)
+	if (Callback::charButtonUp == VK_SPACE)
 	{
 		addObject("Dumbbell_05");
 		return true;
 	}
 
-    if (_charButtonUp == 'L')
+    if (Callback::charButtonUp == 'L')
     {
         _visibleVectorLight = !_visibleVectorLight;
-    }*/
+    }
     
 	return false;
 }
 
 bool GameTerrain::pressButtonPinch(void *data)
 {
-	/*float speedCamera = 1.0f;
-	if (Callback::_key[VK_SHIFT])
+	float speedCamera = 1.0f;
+	if (Callback::key[VK_SHIFT])
 	{
 		speedCamera = 0.125f;
 	}
 
-	if (Callback::_key['W'])
+	if (Callback::key['W'])
 	{
 		Camera::current.move(CAMERA_FORVARD, speedCamera);
 	}
 
-	if (Callback::_key['S'])
+	if (Callback::key['S'])
 	{
 		Camera::current.move(CAMERA_BACK, speedCamera);
 	}
 
-	if (Callback::_key['A'])
+	if (Callback::key['A'])
 	{
 		Camera::current.move(CAMERA_RIGHT, speedCamera);
 	}
 
-	if (Callback::_key['D'])
+	if (Callback::key['D'])
 	{
 		Camera::current.move(CAMERA_LEFT, speedCamera);
 	}
 
-	if (Callback::_key['R'])
+	if (Callback::key['R'])
 	{
 		Camera::current.move(CAMERA_TOP, speedCamera);
 	}
 
-	if (Callback::_key['F'])
+	if (Callback::key['F'])
 	{
 		Camera::current.move(CAMERA_DOWN, speedCamera);
-	}*/
+	}
 
 	return true;
 }
 
 bool GameTerrain::pressButtonDown(void *data)
 {
-	/*if (_charButtonDown == VK_SPACE)
+	if (Callback::charButtonDown == VK_SPACE)
 	{
 		addObject("Dumbbell_0125");
 		return true;
-	}*/
+	}
 
 
-	/*if (Callback::_key[VK_CONTROL] && Callback::_key['P'])
+	if (Callback::key[VK_CONTROL] && Callback::key['P'])
 	{
 		_visiblePhysic = !_visiblePhysic;
-	}*/
+	}
 
 	return false;
 }

@@ -5,7 +5,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-
 // GLM
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>

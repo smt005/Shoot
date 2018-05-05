@@ -3,6 +3,7 @@
 #include "Physics.h"
 #include "../Common/IncludesMatem.h"
 #include "../Common/json.h"
+#include "../Callback/Callback.h"
 
 #include <string>
 using namespace std;
@@ -20,7 +21,7 @@ enum ObjectType
 	PHYSIC_CAR
 };
 
-class Object
+class Object: public CallbackObject
 {
 //private:
 protected:

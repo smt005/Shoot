@@ -13,7 +13,7 @@ typedef std::shared_ptr<Map> MapPtr;
 class Camera;
 class Callback;
 
-class GameTerrain : public Game, public Callback
+class GameTerrain : public Game, public CallbackObject
 {
 private:
 	MapPtr _map;
@@ -34,6 +34,7 @@ public:
 	void initCallback();
 
 private:
+	bool close(void* data);
 	bool rotateCamera(void *data);
 	bool pressButton(void *data);
 	bool pressButtonPinch(void *data);

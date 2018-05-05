@@ -134,6 +134,7 @@ void App::actionOnFrame()
 	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
 	Callback::move(pos);
 	Callback::tap_pinch();
+	Callback::buttonPinch();
 }
 
 double App::getCurentTime()
@@ -236,7 +237,6 @@ AppConfig& App::getAppConfig()
 
 string getPathExe(const char* exeFile)
 {
-	// Get path exe file
 	string exeFileStr(exeFile);
 	size_t index = exeFileStr.find_last_of('\\');
 	string exePathStr;
