@@ -7,6 +7,7 @@
 #include <memory>
 using namespace std;
 
+class AiControll;
 class Map;
 typedef std::shared_ptr<Map> MapPtr;
 
@@ -16,7 +17,9 @@ class Callback;
 class GameTerrain : public Game, public CallbackObject
 {
 private:
-	MapPtr _map;
+	MapPtr _mapPtr;
+	AiControll* _ai;
+
 	bool _visiblePhysic = false;
     bool _visibleVectorLight = false;
     
@@ -40,4 +43,7 @@ private:
 	bool pressButtonPinch(void *data);
 	bool pressButtonDown(void *data);
 	void addObject(const string& name);
+
+	void controlGlider();
+	void controllCamera();
 };

@@ -47,10 +47,10 @@ public:
 
 	float frustum(const mat4x4 &mat, const float &radius);
 
-	void setOrtho(const float &left, const float &right, const float &bottom, const float &top);
-	void setPerspective(const float &fov, const float &aspect, const float &zNear, const float &zFar);
+	void setOrtho(const float left, const float right, const float bottom, const float top);
+	void setPerspective(const float fov, const float aspect, const float zNear, const float zFar);
 	void setLookAt(const vec3 &eye, const vec3 &center);
-	void setLookAt(const vec3 &pos, const vec3 &vector, const float &dist);
+	void setLookAt(const vec3 &pos, const vec3 &vector, const float dist);
 
 	const bool& calcFrustum() { return _calcFrustum; }
 	const bool& fromEye() { return _fromEye; }
@@ -60,15 +60,15 @@ public:
 	const float& speed() { return _speed; }
 	const float& speedRotate() { return _speedRotate; }
 
-	void setCalcFrustum(const bool &calcFrustum);
-	void setFromEye(const bool &fromEye);
-	void setDist(const float &dist);
+	void setCalcFrustum(const bool calcFrustum);
+	void setFromEye(const bool fromEye);
+	void setDist(const float dist);
 	void setVector(const vec3 &vector);
 	void setPos(const vec3 &pos);
-	void setSpeed(const float &speed) { _speed = speed; };
-	void setSpeedRotate(const float &speedRotate) { _speedRotate = speedRotate; };
+	void setSpeed(const float speed) { _speed = speed; };
+	void setSpeedRotate(const float speedRotate) { _speedRotate = speedRotate; };
 
-	void move(const int &direct, float speed = 0);
+	void move(const int direct, float speed = 0);
 	void move(const vec2 &direct);
 	void rotate(const vec2 &angles);
 	

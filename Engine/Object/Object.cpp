@@ -18,6 +18,20 @@ Object::~Object()
 {
 }
 
+vec3 Object::getPos()
+{
+	return vec3(_matrix[3][0], _matrix[3][1], _matrix[3][2]);
+}
+
+vec3 Object::getVector()
+{
+	vec4 vector(1.0f, 0.0f, 0.0f, 0.0f);
+	vector = _matrix * vector;
+
+	vec3 resVector(vector.x, vector.y, vector.z);
+	return resVector;
+}
+
 void Object::getDataJson(json& dataJson)
 {
 	dataJson["name"] = name();

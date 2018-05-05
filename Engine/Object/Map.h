@@ -13,6 +13,8 @@ using json = nlohmann::json;
 class Object;
 class Glider;
 class Map;
+
+//typedef std::shared_ptr<Glider> GliderPtr;
 typedef std::shared_ptr<Map> MapPtr;
 
 class Map : public DataClass <Map>
@@ -37,4 +39,6 @@ public:
 
 	Object& addObjectToPos(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 	Object& addObject(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::mat4x4& mat = glm::mat4x4(1.0));
+
+	Glider& getGliderByName(const string& name);
 };

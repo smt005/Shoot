@@ -71,6 +71,8 @@ ObjectT& find(vector<ObjectT*>& vector, const string& name)
 
 		if (item->name() == name)
 			return true;
+
+		return false;
 	});
 
 	if (it != vector.end())

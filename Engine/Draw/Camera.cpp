@@ -95,13 +95,13 @@ float Camera::frustum(const mat4x4 &mat, const float &radius)
 	return dist + radius;
 }
 
-void Camera::setOrtho(const float &left, const float &right, const float &bottom, const float &top)
+void Camera::setOrtho(const float left, const float right, const float bottom, const float top)
 {
 	_matProject = ortho(left, right, bottom, top);
 	makeMatProjectView();
 }
 
-void Camera::setPerspective(const float &fov, const float &aspect, const float &zNear, const float &zFar)
+void Camera::setPerspective(const float fov, const float aspect, const float zNear, const float zFar)
 {
 	_matProject = perspective(fov, aspect, zNear, zFar);
 	makeMatProjectView();
@@ -128,7 +128,7 @@ void Camera::setLookAt(const vec3 &eye, const vec3 &center)
 	makeMatProjectView();
 }
 
-void Camera::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist)
+void Camera::setLookAt(const vec3 &pos, const vec3 &vector, const float dist)
 {
 	if (_vector != vector || (dist != 0.0f && _dist != dist))
 	{
@@ -162,20 +162,20 @@ void Camera::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist)
 	}
 }
 
-void Camera::setCalcFrustum(const bool &calcFrustum)
+void Camera::setCalcFrustum(const bool calcFrustum)
 {
 	_calcFrustum = calcFrustum;
 	if (_calcFrustum) makeFrustum();
 };
 
-void Camera::setFromEye(const bool &fromEye)
+void Camera::setFromEye(const bool fromEye)
 {
 	if (_fromEye == fromEye) return;
 
 	_fromEye = fromEye;
 }
 
-void Camera::setDist(const float &dist)
+void Camera::setDist(const float dist)
 {
 	if (_fromEye) return;
 	if (_dist == dist || dist <= 1.0f) return;
@@ -235,7 +235,7 @@ void Camera::setPos(const vec3 &pos)
 	makeMatProjectView();
 }
 
-void Camera::move(const int &direct, float speed)
+void Camera::move(const int direct, float speed)
 {
 	if (speed > 0.0f) _speed = speed;
 	speed = _fromEye ? -_speed : _speed;

@@ -2,7 +2,7 @@
 
 #define VK_ESCAPE   256
 #define VK_SHIFT    340
-#define VK_CONTROL  347
+#define VK_CONTROL  341
 #define VK_RETURN   259
 
 #define VK_SPACE    32

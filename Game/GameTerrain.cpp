@@ -1,10 +1,13 @@
 #include "GameTerrain.h"
+#include "AiControll.h"
+
 #include "../App/App.h"
 #include "../App/File.h"
 
 #include "../Engine/Draw/DrawEngine.h"
 #include "../Engine/Draw/Camera.h"
 #include "../Engine/Object/Map.h"
+#include "../Engine/Object/Glider.h"
 #include "../Engine/Object/Object.h"
 #include "../Engine/Object/Model.h"
 #include "../Engine/Object/Shape.h"
@@ -21,8 +24,6 @@ GameTerrain::~GameTerrain()
 
 bool GameTerrain::init()
 {
-	//Physics::init();
-
 	initMap();
 	initDraw();
 	initCallback();
@@ -38,8 +39,12 @@ void GameTerrain::save()
 
 void GameTerrain::onFrame()
 {
-	_map->action();
-	//Physics::update();
+	_mapPtr->action();
+
+	Glider& glider = _mapPtr->getGliderByName("Glider_03");
+	vec3 pos = glider.getPos();
+	pos.z = 1.0f;
+	Camera::current.setPos(pos);
 }
 
 void GameTerrain::draw()
@@ -48,12 +53,12 @@ void GameTerrain::draw()
 
 	if (!_visiblePhysic)
 	{
-		DrawEngine::drawMap(*_map);
+		DrawEngine::drawMap(*_mapPtr);
         
         if (_visibleVectorLight)
         {
             DrawEngine::prepareDrawLine();
-            vector<Object*>& objects = _map->_objects;
+            vector<Object*>& objects = _mapPtr->_objects;
 
             for (auto object : objects)
             {
@@ -70,14 +75,25 @@ void GameTerrain::draw()
 	}
 	else
 	{
-		DrawEngine::drawMapPhysic(*_map);
+		DrawEngine::drawMapPhysic(*_mapPtr);
 	}
 }
 
 void GameTerrain::initMap()
 {
-	_map = Map::getByName("MapGameTerrain");
-	_map->setPhysic();
+	_mapPtr = Map::getByName("MapGameTerrain");
+	_mapPtr->setPhysic();
+
+	// Glider
+	Glider& glider = _mapPtr->getGliderByName("Glider_03");
+
+	GliderTemplate* gliderTemplate = new GliderTemplate();
+	gliderTemplate->_speed = 0.5f;
+	gliderTemplate->_speedRotate = 0.05f;
+	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
+
+	_ai = new AiControll();
+	glider.setAi(_ai);
 }
 
 void GameTerrain::initDraw()
@@ -88,14 +104,18 @@ void GameTerrain::initDraw()
 	DrawEngine::initDrawLines();
 
 	Camera::current.setDefault();
-	Camera::current.setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	Camera::current.setSpeed(0.1f);
 	Camera::current.setCalcFrustum(false);
+
+	Camera::current.setFromEye(false);
+	Camera::current.setDist(15.0f);
 }
 
 void GameTerrain::initCallback()
 {
-	addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
+	//addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
+	addCallback(EventCallback::MOVE, Function(rotateCamera));
+
 	addCallback(EventCallback::BUTTON_UP, Function(pressButton));
 	addCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
 	addCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
@@ -110,6 +130,10 @@ bool GameTerrain::close(void* data)
 bool GameTerrain::rotateCamera(void *data)
 {
 	Camera::current.rotate(Callback::vector);
+
+	if (_ai)
+		_ai->setVector(Camera::current.vector());
+
 	return true;
 }
 
@@ -137,41 +161,8 @@ bool GameTerrain::pressButton(void *data)
 
 bool GameTerrain::pressButtonPinch(void *data)
 {
-	float speedCamera = 1.0f;
-	if (Callback::key[VK_SHIFT])
-	{
-		speedCamera = 0.125f;
-	}
-
-	if (Callback::key['W'])
-	{
-		Camera::current.move(CAMERA_FORVARD, speedCamera);
-	}
-
-	if (Callback::key['S'])
-	{
-		Camera::current.move(CAMERA_BACK, speedCamera);
-	}
-
-	if (Callback::key['A'])
-	{
-		Camera::current.move(CAMERA_RIGHT, speedCamera);
-	}
-
-	if (Callback::key['D'])
-	{
-		Camera::current.move(CAMERA_LEFT, speedCamera);
-	}
-
-	if (Callback::key['R'])
-	{
-		Camera::current.move(CAMERA_TOP, speedCamera);
-	}
-
-	if (Callback::key['F'])
-	{
-		Camera::current.move(CAMERA_DOWN, speedCamera);
-	}
+	controlGlider();
+	controllCamera();
 
 	return true;
 }
@@ -200,7 +191,82 @@ void GameTerrain::addObject(const string& name)
 	randomPos.y = help::random_f(-50.0f, 100.0f);
 	randomPos.z = help::random_f(10.0f, 100.0f);
 
-	//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "addObject %s [%f %f %f]\n", name, randomPos.x, randomPos.y, randomPos.z);
+	_mapPtr->addObjectToPos(name, PhysicType::CONVEX, randomPos);
+}
 
-	_map->addObjectToPos(name, PhysicType::CONVEX, randomPos);
+void GameTerrain::controlGlider()
+{
+	if (!_ai)
+		return;
+
+	if (Callback::key['W'])
+	{
+		_ai->setCommand(GliderCommand::FOWARD);
+	}
+
+	if (Callback::key['S'])
+	{
+		_ai->setCommand(GliderCommand::BACK);
+	}
+
+	if (Callback::key['A'])
+	{
+		_ai->setCommand(GliderCommand::LEFT);
+	}
+
+	if (Callback::key['D'])
+	{
+		_ai->setCommand(GliderCommand::RIGHT);
+	}
+
+	if (Callback::key['R'])
+	{
+	}
+
+	if (Callback::key['F'])
+	{
+
+	}
+}
+
+void GameTerrain::controllCamera()
+{
+	float speedCamera = 1.0f;
+	if (Callback::key[VK_SHIFT])
+	{
+		speedCamera = 0.125f;
+	}
+
+	if (Callback::key[VK_CONTROL])
+	{
+		if (Callback::key['W'])
+		{
+			Camera::current.move(CAMERA_FORVARD, speedCamera);
+		}
+
+		if (Callback::key['S'])
+		{
+			Camera::current.move(CAMERA_BACK, speedCamera);
+		}
+
+		if (Callback::key['A'])
+		{
+			Camera::current.move(CAMERA_RIGHT, speedCamera);
+		}
+
+		if (Callback::key['D'])
+		{
+			Camera::current.move(CAMERA_LEFT, speedCamera);
+		}
+
+		if (Callback::key['R'])
+		{
+			Camera::current.move(CAMERA_TOP, speedCamera);
+		}
+
+		if (Callback::key['F'])
+		{
+			Camera::current.move(CAMERA_DOWN, speedCamera);
+		}
+	}
 }

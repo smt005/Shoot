@@ -44,6 +44,8 @@ public:
 	const string& name() { return _name; };
 	const mat4x4& getMatrix() { return _matrix; };
 	const float* matrixFloat() { return value_ptr(_matrix); };
+	vec3 getPos();
+	vec3 getVector();
 	void getDataJson(json& dataJson);
 
 	void setMatrix(const mat4x4 &matrix) { _matrix = matrix; };

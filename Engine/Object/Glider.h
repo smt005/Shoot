@@ -18,18 +18,23 @@ typedef shared_ptr<GliderTemplate> GliderTemplatePtr;
 
 class AIInterface
 {
-public:
-	AIInterface(GliderWptr glider)
-	{
-		_glider = glider;
-	}
+	friend Glider;
 
+public:
 	virtual ~AIInterface() { }
 	virtual void action() { }
 
 private:
-	GliderWptr _glider;
+	void setGlider(Glider* glider)
+	{
+		_glider = glider;
+	}
+
+protected:
+	Glider* _glider;
 };
+
+//---
 
 struct GliderTemplate
 {
@@ -39,14 +44,31 @@ struct GliderTemplate
 	float _maxHeight = 1.0f;
 	float _speedHeight = 0.01f;
 	float _speed = 0.05f;
+	float _speedRotate = 0.1f;
+};
+
+//---
+
+#define GLIDER_COUNT_COMMAND 8
+enum GliderCommand
+{
+	FOWARD = 0,
+	BACK = 1,
+	LEFT = 2,
+	RIGHT = 3,
+	JUMP = 4,
+	DUCK = 5,
+	SHOOT = 6,
+	ANY = 7
 };
 
 class Glider : public Object
 {
 private:
-	GliderPtr _self;
 	GliderTemplatePtr _template;
 	AIptr _ai;
+	vec3 _needVector = vec3(1.0f, 0.0f, 0.0f);
+	bool _commands[GLIDER_COUNT_COMMAND];
 
 	float _speedHeight;
 
@@ -54,7 +76,19 @@ public:
 	Glider();
 	virtual ~Glider();
 
-	void action();
+	inline void setNeedVector(const vec3& needVector) { _needVector = needVector; }
+	inline bool* getCommands() { return _commands; }
+	void resetCommand();
 
+	void setTemplate(GliderTemplatePtr gliderTemplate);
+	void setAi(AIInterface* ai);
+
+	void action();
 	void move(const glm::vec3 &vector);
+	void rotate(const glm::vec3 &vector);
+
+	static Glider& defaultItem() { return _defaultGlider; }
+
+private:
+	static Glider _defaultGlider;
 };

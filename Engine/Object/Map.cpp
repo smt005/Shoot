@@ -160,3 +160,8 @@ Object& Map::addObject(const string& nameModel, const PhysicType& type, const gl
 
 	return object;
 }
+
+Glider& Map::getGliderByName(const string& name)
+{
+	return help::find(_gliders, name);
+}
