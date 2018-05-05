@@ -34,6 +34,9 @@ public:
 	bool create(const string &newName);
 	void setPhysic();
 
+	inline std::vector<Object*>& getObjects() { return _objects; }
+	inline std::vector<Glider*>& getGliders() { return _gliders; }
+
 	void getDataJson(json& dataJson);
 	void action();
 

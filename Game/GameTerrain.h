@@ -38,6 +38,7 @@ public:
 
 private:
 	bool close(void* data);
+	bool shoot(void *data);
 	bool rotateCamera(void *data);
 	bool pressButton(void *data);
 	bool pressButtonPinch(void *data);

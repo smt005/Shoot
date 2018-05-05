@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Glider.h"
 #include "Model.h"
+#include "Shell.h"
 #include "Physics.h"
 #include "../../App/File.h"
 #include "../Common/Help.h"
@@ -137,6 +138,7 @@ void Map::action()
 {
 	for (auto object : _objects) object->action();
 	for (auto glider : _gliders) glider->action();
+	Shell::onFrame();
 }
 
 Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)

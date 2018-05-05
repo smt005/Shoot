@@ -42,6 +42,13 @@ void Object::getDataJson(json& dataJson)
 	dataJson["pos"].push_back(_matrix[3][2]);
 }
 
+void Object::setPos(const vec3& pos)
+{
+	_matrix[3][0] = pos[0];
+	_matrix[3][1] = pos[1];
+	_matrix[3][2] = pos[2];
+}
+
 void Object::setMatrix(const float *matrix)
 {
 	_matrix[0][0] = matrix[0];

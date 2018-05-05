@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Object.h"
+#include "Gun.h"
 #include "../Common/IncludesMatem.h"
 
 #include "memory"
@@ -40,8 +41,8 @@ struct GliderTemplate
 {
 	const static GliderTemplate _template;
 
-	float _minHeight = 0.9f;
-	float _maxHeight = 1.0f;
+	float _maxHeight = 4.0f;
+	float _minHeight = 3.0f;
 	float _speedHeight = 0.01f;
 	float _speed = 0.05f;
 	float _speedRotate = 0.1f;
@@ -67,9 +68,12 @@ class Glider : public Object
 private:
 	GliderTemplatePtr _template;
 	AIptr _ai;
+	GunPtr _gunPtr;
+
 	vec3 _needVector = vec3(1.0f, 0.0f, 0.0f);
 	bool _commands[GLIDER_COUNT_COMMAND];
 
+	bool _live = true;
 	float _speedHeight;
 
 public:
@@ -80,12 +84,18 @@ public:
 	inline bool* getCommands() { return _commands; }
 	void resetCommand();
 
+	inline int getId() { return reinterpret_cast<int>(this); }
+	inline bool getLive() { return _live; }
+	inline void setLive(const bool live) { _live = live; }
+
 	void setTemplate(GliderTemplatePtr gliderTemplate);
 	void setAi(AIInterface* ai);
 
 	void action();
 	void move(const glm::vec3 &vector);
 	void rotate(const glm::vec3 &vector);
+	void height();
+	void shoot();
 
 	static Glider& defaultItem() { return _defaultGlider; }
 

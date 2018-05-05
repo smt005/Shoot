@@ -48,6 +48,9 @@ public:
 	vec3 getVector();
 	void getDataJson(json& dataJson);
 
+	inline void addPos(const vec3& offset) { _matrix[3][0] = _matrix[3][0] + offset.x; _matrix[3][1] = _matrix[3][1] + offset.y; _matrix[3][2] = _matrix[3][2] + offset.z; }
+
+	void setPos(const vec3& pos);
 	void setMatrix(const mat4x4 &matrix) { _matrix = matrix; };
 	void setMatrix(const float *matrix);
 

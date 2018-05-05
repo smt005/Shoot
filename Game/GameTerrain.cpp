@@ -43,7 +43,7 @@ void GameTerrain::onFrame()
 
 	Glider& glider = _mapPtr->getGliderByName("Glider_03");
 	vec3 pos = glider.getPos();
-	pos.z = 1.0f;
+	pos.z += 5.0f;
 	Camera::current.setPos(pos);
 }
 
@@ -88,6 +88,8 @@ void GameTerrain::initMap()
 	Glider& glider = _mapPtr->getGliderByName("Glider_03");
 
 	GliderTemplate* gliderTemplate = new GliderTemplate();
+	gliderTemplate->_maxHeight = 4.0f;
+	gliderTemplate->_minHeight = 3.0f;
 	gliderTemplate->_speed = 0.5f;
 	gliderTemplate->_speedRotate = 0.05f;
 	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
@@ -115,7 +117,7 @@ void GameTerrain::initCallback()
 {
 	//addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
 	addCallback(EventCallback::MOVE, Function(rotateCamera));
-
+	addCallback(EventCallback::TAP_PINCH, Function(shoot));
 	addCallback(EventCallback::BUTTON_UP, Function(pressButton));
 	addCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
 	addCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
@@ -124,6 +126,14 @@ void GameTerrain::initCallback()
 bool GameTerrain::close(void* data)
 {
 	App::close();
+	return true;
+}
+
+bool GameTerrain::shoot(void *data)
+{
+	if (_ai)
+		_ai->setCommand(GliderCommand::SHOOT);
+
 	return true;
 }
 

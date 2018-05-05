@@ -1,5 +1,6 @@
 
 #include "Glider.h"
+#include "Shell.h"
 #include "../Common/Log.h"
 
 Glider Glider::_defaultGlider;
@@ -10,6 +11,9 @@ Glider::Glider()
 
 	_speedHeight = _template->_speedHeight;
 	setHeight(_template->_minHeight);
+
+	Gun* gun = new Gun(getId());
+	_gunPtr = GunPtr(gun);
 }
 
 Glider::~Glider()
@@ -76,18 +80,8 @@ void Glider::action()
 
 	//---
 
-	if (getHeight() > _template->_maxHeight)
-	{
-		_speedHeight = -_template->_speedHeight;
-	}
-
-	if (getHeight() < _template->_minHeight)
-	{
-		_speedHeight = _template->_speedHeight;
-	}
-
-	setHeight(getHeight() + _speedHeight);
-
+	height();
+	
 	if (countVectors > 0)
 	{
 		if (length(moveVector) > 0.0f)
@@ -99,8 +93,10 @@ void Glider::action()
 		}
 	}
 	
-
 	rotate(_needVector);
+
+	if (_commands[GliderCommand::SHOOT])
+		shoot();
 
 	resetCommand();
 }
@@ -124,7 +120,6 @@ void Glider::rotate(const glm::vec3 &vector)
 		return;
 
 	float ab = vector.x * vectorGlider.x + vector.y * vectorGlider.y;
-
 	float angle = ab / am;
 
 	if (angle == 0.0f)
@@ -139,4 +134,30 @@ void Glider::rotate(const glm::vec3 &vector)
 
 	vec3 vectorMatrix(0.0f, 0.0f, 1.0f);
 	_matrix = glm::rotate(_matrix, angle, vectorMatrix);
+}
+
+void Glider::height()
+{
+	float height = getHeight();
+
+	if (height > _template->_maxHeight)
+	{
+		_speedHeight = -_template->_speedHeight;
+	}
+
+	if (height < _template->_minHeight)
+	{
+		_speedHeight = _template->_speedHeight;
+	}
+
+	if (!_live)
+		_speedHeight = -_template->_speedHeight * 5.0f;
+
+	setHeight(height + _speedHeight);
+}
+
+void Glider::shoot()
+{
+	if (_gunPtr)
+		_gunPtr->shoot(getPos(), _needVector);
 }

@@ -8,6 +8,7 @@
 #include "../Object/Glider.h"
 #include "../Object/Model.h"
 #include "../Object/Shape.h"
+#include "../Object/Shell.h"
 
 #include <GL/glew.h>
 
@@ -148,6 +149,11 @@ void DrawEngine::drawMap(Map& map)
 	for (auto glider : gliders)
 	{
 		drawObject(*glider);
+	}
+
+	for (auto shell : Shell::getShells())
+	{
+		drawObject(*shell);
 	}
 }
 
