@@ -2,5 +2,6 @@
 
 int main(int count, char** arg)
 {
-	return !App::execution();
+	char* exeFile = count > 0 ? arg[0] : nullptr;
+	return !App::execution(exeFile);
 }

@@ -1,6 +1,6 @@
 
 #include "Camera.h"
-#include "../../App/App.h"
+#include "../App/App.h"
 
 Camera::Camera()
 {

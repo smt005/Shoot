@@ -40,3 +40,9 @@ Game* Game::getGame()
 
 	return _game;
 }
+
+void Game::saveGame()
+{
+	if (_game)
+		_game->save();
+}

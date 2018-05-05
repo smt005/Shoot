@@ -23,14 +23,15 @@ bool Map::create(const string &newName)
 	setName(newName);
 
 	string fileName = "Map/" + name() + ".json";
-	string dataString(File::loadText(fileName));
+	char* dataChar = File::loadText(fileName);
 
-	if (dataString.empty())
+	if (!dataChar)
 	{
 		return false;
 	}
 
-	json data = json::parse(dataString.c_str());
+	json data = json::parse(dataChar);
+	delete[] dataChar;
 
 	_area = data["area"].is_null() ? 10.0f : data["area"].get<float>();
 

@@ -27,6 +27,8 @@ bool GameTerrain::init()
 	initDraw();
 	initCallback();
 
+	const char* shaderSource = File::loadText("fragmentLink");
+
 	return true;
 }
 
@@ -81,7 +83,7 @@ void GameTerrain::initMap()
 void GameTerrain::initDraw()
 {
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
-	DrawEngine::setAmbientColor(0.2, 0.2, 0.3);
+	DrawEngine::setAmbientColor(0.2f, 0.2f, 0.3f);
 	DrawEngine::initDrawMap();
 	DrawEngine::initDrawLines();
 
@@ -93,8 +95,8 @@ void GameTerrain::initDraw()
 
 void GameTerrain::initCallback()
 {
-	/*this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
-	this->setCallback(EventCallback::BUTTON_UP, Function(pressButton));
+	//this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
+	/*this->setCallback(EventCallback::BUTTON_UP, Function(pressButton));
 	this->setCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
 	this->setCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
 	
@@ -176,10 +178,10 @@ bool GameTerrain::pressButtonDown(void *data)
 	{
 		addObject("Dumbbell_0125");
 		return true;
-	}
+	}*/
 
 
-	if (Callback::_key[VK_CONTROL] && Callback::_key['P'])
+	/*if (Callback::_key[VK_CONTROL] && Callback::_key['P'])
 	{
 		_visiblePhysic = !_visiblePhysic;
 	}*/
@@ -187,16 +189,14 @@ bool GameTerrain::pressButtonDown(void *data)
 	return false;
 }
 
-void GameTerrain::addObject(char* name)
+void GameTerrain::addObject(const string& name)
 {
 	glm::vec3 randomPos;
 	randomPos.x = help::random_f(-50.0f, 100.0f);
 	randomPos.y = help::random_f(-50.0f, 100.0f);
 	randomPos.z = help::random_f(10.0f, 100.0f);
 
-#ifdef BUILD_WIN_GLES
-	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "addObject %s [%f %f %f]\n", name, randomPos.x, randomPos.y, randomPos.z);
-#endif
+	//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "addObject %s [%f %f %f]\n", name, randomPos.x, randomPos.y, randomPos.z);
 
 	_map->addObjectToPos(name, PhysicType::CONVEX, randomPos);
 }

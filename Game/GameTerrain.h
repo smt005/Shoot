@@ -1,16 +1,19 @@
 #pragma once
 
 #include "Game.h"
-//#include "Callback/Callback.h"
+#include "../Engine/Callback/Callback.h"
 
+#include <string>
 #include <memory>
+using namespace std;
 
 class Map;
 typedef std::shared_ptr<Map> MapPtr;
 
 class Camera;
+class Callback;
 
-class GameTerrain : public Game// , public Callback
+class GameTerrain : public Game, public Callback
 {
 private:
 	MapPtr _map;
@@ -35,5 +38,5 @@ private:
 	bool pressButton(void *data);
 	bool pressButtonPinch(void *data);
 	bool pressButtonDown(void *data);
-	void addObject(char* name);
+	void addObject(const string& name);
 };

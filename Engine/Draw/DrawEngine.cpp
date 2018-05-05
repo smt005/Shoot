@@ -11,7 +11,6 @@
 
 #include <GL/glew.h>
 
-
 float DrawEngine::_backgroundColor[] = {0.3f, 0.6f, 0.9f, 1.0f};
 unsigned int DrawEngine::_programBase;
 unsigned int DrawEngine::_cuttrentBufer = 0;

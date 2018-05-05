@@ -1,6 +1,7 @@
 
 #include "Shader.h"
 #include "../App/File.h"
+#include "../App/App.h"
 
 #include <GL/glew.h>
 
@@ -10,6 +11,8 @@
 
 bool Shader::getShaderProgram(unsigned int& program, const string& vertexLink, const string& fragmentLink)
 {
+	float a = App::aspect();
+
     const char* shaderSource = File::loadText(fragmentLink);
 	if (!shaderSource)
 		return false;
@@ -23,18 +26,13 @@ bool Shader::getShaderProgram(unsigned int& program, const string& vertexLink, c
 	glGetShaderiv(_fragmentShader, GL_COMPILE_STATUS, &isShaderCompiled);
 	if (!isShaderCompiled)
 	{
-		// If an error happened, first retrieve the length of the log message
 		int infoLogLength, charactersWritten;
 		glGetShaderiv(_fragmentShader, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		char* infoLog = new char[infoLogLength];
 		glGetShaderInfoLog(_fragmentShader, infoLogLength, &charactersWritten, infoLog);
         
-        #ifdef BUILD_OSX
-                printf("Shader compiled fragment ERROR: %s", infoLog);
-		#elif BUILD_WIN_GLES
-			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled fragment ERROR: %s\n", infoLog);
-        #endif
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled fragment ERROR: %s\n", infoLog);
         
 		delete[] infoLog;
 		return false;
@@ -52,18 +50,13 @@ bool Shader::getShaderProgram(unsigned int& program, const string& vertexLink, c
 	glGetShaderiv(_vertexShader, GL_COMPILE_STATUS, &isShaderCompiled);
 	if (!isShaderCompiled)
 	{
-		// If an error happened, first retrieve the length of the log message
 		int infoLogLength, charactersWritten;
 		glGetShaderiv(_vertexShader, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		char* infoLog = new char[infoLogLength];
 		glGetShaderInfoLog(_vertexShader, infoLogLength, &charactersWritten, infoLog);
 
-        #ifdef BUILD_OSX
-               printf("Shader compiled vertex ERROR: %s", infoLog);
-		#elif BUILD_WIN_GLES
-			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled vertex ERROR: %s\n", infoLog);
-        #endif
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled vertex ERROR: %s\n", infoLog);
 
 		delete[] infoLog;
 		return false;
@@ -86,11 +79,7 @@ bool Shader::getShaderProgram(unsigned int& program, const string& vertexLink, c
 		char* infoLog = new char[infoLogLength];
 		glGetProgramInfoLog(_shaderProgram, infoLogLength, &charactersWritten, infoLog);
 
-        #ifdef BUILD_OSX
-                printf("Shader linked ERROR: %s", infoLog);
-		#elif BUILD_WIN_GLES
-			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader linked ERROR: %s \n", infoLog);
-        #endif
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader linked ERROR: %s \n", infoLog);
 
 		delete[] infoLog;
 		return false;

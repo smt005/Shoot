@@ -1,37 +1,99 @@
 #include "App.h"
+#include "File.h"
+#include "AppConfig.h"
+#include "../Game/Game.h"
+#include "../Engine/Callback/Callback.h"
 
 #include <Windows.h>
 #include "GL/glew.h"
 #include "glfw3.h"
 
 #include <string>
-
-#include "../Game/Game.h"
-
 using namespace std;
 
-struct AppConfig
-{
-	int windowWidth = 1024;
-	int windowHeight = 512;
-	const string name = ("Shoot");
-};
+AppConfig App::_appConfig;
 
-AppConfig appConfig;
+int App::_width;
+int App::_height;
+float App::_aspect;
 
-int App::execution()
+string getPathExe(const char* exeFile);
+
+int App::execution(const char* exeFile)
 {
-	GLFWwindow* window;
+	if (!exeFile)
+		return -1;
 
 	if (!glfwInit())
 		return -1;
 
-	window = glfwCreateWindow(appConfig.windowWidth, appConfig.windowHeight, appConfig.name.c_str(), NULL, NULL);
+	File::setAppResourcesDir(getPathExe(exeFile) + "/Resources/");
+	_appConfig.load();
+
+	GLFWwindow* window;
+	
+	if (_appConfig.hasFullscreen())
+	{
+		if (_appConfig.hasResolutionmonitor())
+		{
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			_width = mode->width;
+			_height = mode->height;
+		}
+		else
+		{
+			_width = _appConfig.getWidth();
+			_height = _appConfig.getHeight();
+		}
+
+		window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), glfwGetPrimaryMonitor(), NULL);
+	}
+	else
+	{
+		_width = _appConfig.getWidth();
+		_height = _appConfig.getHeight();
+
+		window = glfwCreateWindow(_appConfig.getWidth(), _appConfig.getHeight(), _appConfig.getNameGame().c_str(), NULL, NULL);
+	}
+
 	if (!window)
 	{
-		glfwTerminate();
-		return -1;
+		_width = 640;
+		_height = 480;
+
+		window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), NULL, NULL);
+
+		if (!window)
+		{
+			glfwTerminate();
+
+			MessageBox(
+				NULL,
+				"Error creating the window. The program will be closed.",
+				"ERROR",
+				MB_OK |
+				MB_DEFBUTTON1 |
+				MB_ICONEXCLAMATION |
+				MB_DEFAULT_DESKTOP_ONLY
+			);
+
+			return -1;
+		}
+		else
+		{
+			MessageBox(
+				NULL,
+				"Error creating the window. Window mode.",
+				"ERROR",
+				MB_OK |
+				MB_DEFBUTTON1 |
+				MB_ICONEXCLAMATION |
+				MB_DEFAULT_DESKTOP_ONLY
+			);
+		}
 	}
+
+	_aspect = static_cast<float>(_width) / static_cast<float>(_height);
 
 	glfwSetMouseButtonCallback(window, App::mouseButtonCallback);
 	glfwSetCursorPosCallback(window, App::cursorPositionCallback);
@@ -40,7 +102,10 @@ int App::execution()
 	glfwMakeContextCurrent(window);
 
 	if (glewInit() != GLEW_OK)
-		return -1;
+	{
+		glfwTerminate();
+		return false;
+	}
 
 	Game* game = Game::getGame();
 	game->init();
@@ -67,32 +132,8 @@ void App::actionOnFrame()
 	POINT mousePos;
 	GetCursorPos(&mousePos);
 	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
-	//Callback::move(pos);
-	//Callback::tap_pinch();
-}
-
-int App::width()
-{
-	int width = appConfig.windowWidth;
-	// ...
-	return width != 0 ? width : 1;
-}
-
-int App::height()
-{
-	int height = appConfig.windowHeight;
-	// ...
-	return height != 0 ? height : 1;
-}
-
-float App::aspect()
-{
-	int width = appConfig.windowWidth;
-	int height = appConfig.windowHeight;
-
-	// ...
-
-	return height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
+	Callback::move(pos);
+	Callback::tap_pinch();
 }
 
 double App::getCurentTime()
@@ -105,7 +146,7 @@ double App::getCurentTime()
 
 void App::close()
 {
-	//Game::gameSave();
+	Game::saveGame();
 	exit(1);
 }
 
@@ -126,7 +167,7 @@ void App::mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mo
 		{
 		case GLFW_MOUSE_BUTTON_LEFT:
 		{
-			//Callback::tap_down();
+			Callback::tap_down();
 		}
 		break;
 		case GLFW_MOUSE_BUTTON_MIDDLE:
@@ -149,7 +190,7 @@ void App::mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mo
 		{
 		case GLFW_MOUSE_BUTTON_LEFT:
 		{
-			//Callback::tap_up();
+			Callback::tap_up();
 		}
 		break;
 		case GLFW_MOUSE_BUTTON_MIDDLE:
@@ -174,16 +215,32 @@ void App::keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int
 	{
 	case GLFW_PRESS:
 	{
-		//Callback::buttonDown(Key);
+		Callback::buttonDown(Key);
 	}
 	break;
 
 	case GLFW_RELEASE:
 	{
-		//Callback::buttonUp(Key);
+		Callback::buttonUp(Key);
 	}
 	break;
 	}
 }
 
-inline float aspect();
+AppConfig& App::getAppConfig()
+{
+	return _appConfig;
+}
+
+//---
+
+string getPathExe(const char* exeFile)
+{
+	// Get path exe file
+	string exeFileStr(exeFile);
+	size_t index = exeFileStr.find_last_of('\\');
+	string exePathStr;
+	std::copy_n(exeFileStr.begin(), index, std::back_inserter(exePathStr));
+
+	return exePathStr;
+}

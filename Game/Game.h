@@ -14,5 +14,6 @@ public:
 public:
 	static Game* _game;
 	static Game* getGame();
+	static void saveGame();
 };
 

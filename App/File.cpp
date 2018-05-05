@@ -1,13 +1,16 @@
 #include "File.h"
 
-string appResourcesDir("X:/Projects/Shoot/Debug/Resources/");
+#include <stdio.h>
+#include <Shlobj.h>
+
+string File::_appResourcesDir;
 
 char* File::loadText(const string& fileName)
 {
 	if (fileName.empty())
 		return nullptr;
 
-	string fullPath = appResourcesDir + fileName;
+	string fullPath = _appResourcesDir + fileName;
 
 	FILE* file;
 	char* buf = nullptr;
@@ -40,7 +43,7 @@ void File::saveText(const string& fileName, const char *data)
 	if (fileName.empty())
 		return;
 
-	string fullPath = appResourcesDir + fileName;
+	string fullPath = _appResourcesDir + fileName;
 
 	FILE* file;
 
@@ -56,5 +59,10 @@ string File::getFullPath(const string& fileName)
 	if (fileName.empty())
 		return string();
 
-	return appResourcesDir + fileName;
+	return _appResourcesDir + fileName;
+}
+
+void File::setAppResourcesDir(const string& appResourcesDir)
+{
+	_appResourcesDir = appResourcesDir;
 }
