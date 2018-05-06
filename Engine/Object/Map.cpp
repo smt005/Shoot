@@ -103,15 +103,15 @@ bool Map::create(const string &newName)
 
 void Map::setPhysic()
 {
-	for (auto object : _objects)
+	/*for (auto object : _objects)
 	{
 		object->setPhysic();
-	}
+	}*/
 
-	/*for (auto glider : _gliders)
+	for (auto glider : _gliders)
 	{
 		glider->setPhysic();
-	}*/
+	}
 }
 
 void Map::getDataJson(json& dataJson)
@@ -138,7 +138,9 @@ void Map::action()
 {
 	for (auto object : _objects) object->action();
 	for (auto glider : _gliders) glider->action();
+
 	Shell::onFrame();
+	PhysicObject::update();
 }
 
 Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)

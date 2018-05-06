@@ -95,6 +95,8 @@ bool Model::create(const string &newName)
 	}
 	else
 	{
+		// TODO: В DataClass нужно добавить метод добавления объекта и в Shape методы копирования, и оператор присвоения
+
 		string nameWithSuffixScale = nameShape + "_[" + suffixScale + "]";
 
 		if (Shape::hasByName(nameWithSuffixScale))

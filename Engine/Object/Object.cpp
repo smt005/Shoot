@@ -107,8 +107,8 @@ void Object::setPhysic()
 {
 	if (_model)
 	{
-		//ShapePtr& shape = _model->getShapePtr();
-		//_physic = PhysicObject::create(shape, _physicType, _matrix);
+		ShapePtr& shape = _model->getShapePtr();
+		_physic = PhysicObject::create(shape, _physicType, _matrix);
 	}
 }
 

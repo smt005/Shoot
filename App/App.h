@@ -26,7 +26,7 @@ private:
 
 private:
 	static AppConfig _appConfig;
-
+	static GLFWwindow* _window;
 	static int _width;
 	static int _height;
 	static float _aspect;

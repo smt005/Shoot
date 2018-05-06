@@ -7,6 +7,8 @@
 #include "memory"
 using namespace std;
 
+class PhysicObject;
+
 class Glider;
 typedef shared_ptr<Glider> GliderPtr;
 typedef weak_ptr<Glider> GliderWptr;
@@ -75,6 +77,7 @@ private:
 
 	bool _live = true;
 	float _speedHeight;
+	float _speed = 0.0f;
 
 public:
 	Glider();
@@ -92,8 +95,8 @@ public:
 	void setAi(AIInterface* ai);
 
 	void action();
-	void move(const glm::vec3 &vector);
-	void rotate(const glm::vec3 &vector);
+	void move(PhysicObject& physicObject, const glm::vec3 &vector);
+	void rotate(PhysicObject& physicObject, const glm::vec3 &vector);
 	void height();
 	void shoot();
 

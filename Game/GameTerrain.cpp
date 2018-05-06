@@ -41,7 +41,7 @@ void GameTerrain::onFrame()
 {
 	_mapPtr->action();
 
-	Glider& glider = _mapPtr->getGliderByName("Glider_03");
+	Glider& glider = _mapPtr->getGliderByName("Glider_player");
 	vec3 pos = glider.getPos();
 	pos.z += 5.0f;
 	Camera::current.setPos(pos);
@@ -83,14 +83,15 @@ void GameTerrain::initMap()
 {
 	_mapPtr = Map::getByName("MapGameTerrain");
 	_mapPtr->setPhysic();
+	PhysicObject::setGravity(vec3(0.0f, 0.0f, 0.0f));
 
 	// Glider
-	Glider& glider = _mapPtr->getGliderByName("Glider_03");
+	Glider& glider = _mapPtr->getGliderByName("Glider_player");
 
 	GliderTemplate* gliderTemplate = new GliderTemplate();
 	gliderTemplate->_maxHeight = 4.0f;
 	gliderTemplate->_minHeight = 3.0f;
-	gliderTemplate->_speed = 0.5f;
+	gliderTemplate->_speed = 0.01f;
 	gliderTemplate->_speedRotate = 0.05f;
 	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
 

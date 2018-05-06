@@ -3,6 +3,7 @@
 #include "AppConfig.h"
 #include "../Game/Game.h"
 #include "../Engine/Callback/Callback.h"
+#include "../Engine/Common/Log.h"
 
 #include <Windows.h>
 #include "GL/glew.h"
@@ -16,6 +17,7 @@ AppConfig App::_appConfig;
 int App::_width;
 int App::_height;
 float App::_aspect;
+GLFWwindow* App::_window;
 
 string getPathExe(const char* exeFile);
 
@@ -30,8 +32,6 @@ int App::execution(const char* exeFile)
 	File::setAppResourcesDir(getPathExe(exeFile) + "/Resources/");
 	_appConfig.load();
 
-	GLFWwindow* window;
-	
 	if (_appConfig.hasFullscreen())
 	{
 		if (_appConfig.hasResolutionmonitor())
@@ -46,24 +46,24 @@ int App::execution(const char* exeFile)
 			_height = _appConfig.getHeight();
 		}
 
-		window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), glfwGetPrimaryMonitor(), NULL);
+		_window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), glfwGetPrimaryMonitor(), NULL);
 	}
 	else
 	{
 		_width = _appConfig.getWidth();
 		_height = _appConfig.getHeight();
 
-		window = glfwCreateWindow(_appConfig.getWidth(), _appConfig.getHeight(), _appConfig.getNameGame().c_str(), NULL, NULL);
+		_window = glfwCreateWindow(_appConfig.getWidth(), _appConfig.getHeight(), _appConfig.getNameGame().c_str(), NULL, NULL);
 	}
 
-	if (!window)
+	if (!_window)
 	{
 		_width = 640;
 		_height = 480;
 
-		window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), NULL, NULL);
+		_window = glfwCreateWindow(_width, _height, _appConfig.getNameGame().c_str(), NULL, NULL);
 
-		if (!window)
+		if (!_window)
 		{
 			glfwTerminate();
 
@@ -95,11 +95,11 @@ int App::execution(const char* exeFile)
 
 	_aspect = static_cast<float>(_width) / static_cast<float>(_height);
 
-	glfwSetMouseButtonCallback(window, App::mouseButtonCallback);
-	glfwSetCursorPosCallback(window, App::cursorPositionCallback);
-	glfwSetKeyCallback(window, App::keyCallback);
+	glfwSetMouseButtonCallback(_window, App::mouseButtonCallback);
+	glfwSetCursorPosCallback(_window, App::cursorPositionCallback);
+	glfwSetKeyCallback(_window, App::keyCallback);
 
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(_window);
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -110,14 +110,14 @@ int App::execution(const char* exeFile)
 	Game* game = Game::getGame();
 	game->init();
 
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(_window))
 	{
 		actionOnFrame();
 
 		game->onFrame();
 		game->draw();
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(_window);
 
 		glfwPollEvents();
 	}
@@ -131,7 +131,48 @@ void App::actionOnFrame()
 {
 	POINT mousePos;
 	GetCursorPos(&mousePos);
+	
+
+	// TODO:
+	/*int xpos, ypos;
+	glfwGetWindowPos(_window, &xpos, &ypos);
+
+	int width, height;
+	glfwGetWindowSize(_window, &width, &height);
+
+	int right = xpos + width;
+	int bottom = ypos + height;
+	bool changePos = false;
+
+	if (mousePos.x > right)
+	{
+		mousePos.x = xpos;
+		changePos = true;
+	}
+
+	if (mousePos.x < xpos)
+	{
+		mousePos.x = right;
+		changePos = true;
+	}
+
+	if (mousePos.y > bottom)
+	{
+		mousePos.y = ypos;
+		changePos = true;
+	}
+
+	if (mousePos.y < ypos)
+	{
+		mousePos.y = bottom;
+		changePos = true;
+	}
+
+	if (changePos)
+		SetCursorPos(mousePos.x, mousePos.y);*/
+
 	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
+
 	Callback::move(pos);
 	Callback::tap_pinch();
 	Callback::buttonPinch();
