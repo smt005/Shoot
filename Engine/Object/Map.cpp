@@ -4,7 +4,7 @@
 #include "Glider.h"
 #include "Model.h"
 #include "Shell.h"
-#include "Physics.h"
+#include "../Physics/Physics.h"
 #include "../../App/File.h"
 #include "../Common/Help.h"
 
@@ -108,6 +108,9 @@ void Map::setPhysic()
 		object->setPhysic();
 	}*/
 
+	Object& loc = help::find(_objects, "MapArena");
+	loc.setPhysic();
+
 	for (auto glider : _gliders)
 	{
 		glider->setPhysic();
@@ -140,7 +143,7 @@ void Map::action()
 	for (auto glider : _gliders) glider->action();
 
 	Shell::onFrame();
-	PhysicObject::update();
+	Physics::update();
 }
 
 Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)

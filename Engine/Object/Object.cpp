@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Model.h"
 #include "Shape.h"
-#include "Physics.h"
+#include "../Physics/Physics.h"
 
 Object::Object()
 {
@@ -108,7 +108,7 @@ void Object::setPhysic()
 	if (_model)
 	{
 		ShapePtr& shape = _model->getShapePtr();
-		_physic = PhysicObject::create(shape, _physicType, _matrix);
+		_physic = Physics::create(shape, _physicType, _matrix);
 	}
 }
 

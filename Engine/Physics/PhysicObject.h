@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Shape.h"
+#include "PhysicPlane.h"
+#include "../Object/Shape.h"
 
 #include "../Common/IncludesMatem.h"
 using namespace glm;
@@ -8,6 +9,8 @@ using namespace glm;
 #include <memory>
 #include <vector>
 using namespace std;
+
+class Physics;
 
 enum class PhysicType
 {
@@ -22,6 +25,8 @@ typedef shared_ptr<PhysicObject> PhysicObjectPtr;
 
 class PhysicObject final
 {
+	friend Physics;
+
 public:
 	PhysicObject();
 	~PhysicObject();
@@ -30,6 +35,8 @@ public:
 	mat4x4 getWorldTransform();
 
 	inline const vec3& getSpeed() { return _speedVector; }
+	inline const PhysicPlane* getPlanes() { return _planes; }
+	inline vec3 getPos() { return vec3(_mat[3][0], _mat[3][1], _mat[3][2]); }
 
 	void setMatrix(const mat4x4& mat);
 	void setPos(const vec3& pos);
@@ -38,29 +45,23 @@ public:
 
 	void addForce(const vec3& vector);
 
-	static PhysicObjectWptr create(ShapePtr& shape, PhysicType type, const mat4x4 mat);
-	static void clear();
-	static void remove(const ShapePtr& shape);
-	static void update();
-
-	inline static void setGravity(const vec3& gravity) { _gravity = gravity; };
-	inline static const vec3& getGravity() { return _gravity; }
-
 private:
 	void applyVector(const vec3& vector);
+
+	void calculating();
 
 private:
 	ShapePtr _shape;
 	PhysicType _type = PhysicType::NONE;
-	
+	float _radius = 0.0f;
+
+	unsigned int _countPlane = 0;
+	PhysicPlane* _planes = nullptr;
+
 	mat4x4 _mat = mat4x4(1.0f);
 	float _mass = 1.0f;
 
 	vec3 _speedVector = vec3(0.0f);
 
 	vec3 _forceVector = vec3(0.0f);
-
-private:
-	static vector<PhysicObjectPtr> _objects;
-	static vec3 _gravity;
 };

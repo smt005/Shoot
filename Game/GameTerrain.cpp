@@ -83,7 +83,7 @@ void GameTerrain::initMap()
 {
 	_mapPtr = Map::getByName("MapGameTerrain");
 	_mapPtr->setPhysic();
-	PhysicObject::setGravity(vec3(0.0f, 0.0f, 0.0f));
+	Physics::setGravity(vec3(0.0f, 0.0f, 0.0f));
 
 	// Glider
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");

@@ -9,6 +9,9 @@ using namespace std;
 #define SHAPE_VERTEX_POS_SIZE	3
 #define SHAPE_VERTEX_TEX_SIZE   2
 
+// TODO:
+class PhysicObject;
+
 class btCollisionShape;
 class btBvhTriangleMeshShape;
 class Shape;
@@ -37,6 +40,9 @@ public:
 
 class MeshPhysic
 {
+	// TODO:
+	friend PhysicObject;
+
 public:
 	unsigned short int _count = 0;
 	Mesh* _meshes = nullptr;

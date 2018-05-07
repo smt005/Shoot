@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Physics.h"
+#include "../Physics/Physics.h"
 #include "../Common/DataClass.h"
 #include "../Common/IncludesMatem.h"
 
