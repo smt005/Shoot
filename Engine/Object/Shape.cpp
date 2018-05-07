@@ -294,6 +294,51 @@ Shape::~Shape()
 	}
 }
 
+Shape::Shape(const Shape& shape)
+{
+	copy(shape);
+}
+
+Shape& Shape::operator=(const Shape& shape)
+{
+	copy(shape);
+	return *this;
+}
+
+void Shape::copy(const Shape& shape)
+{
+	// Mesh
+	int size(0);
+	size = sizeof(shape._aVertex);
+
+	if (shape._countVertex == 0 || shape._countIndex == 0)
+		return;
+
+	_countVertex = shape._countVertex;
+
+	int sizeFloat = sizeof(float);
+
+	size = _countVertex * sizeFloat * 3;
+	_aVertex = new float[size];
+	memcpy(_aVertex, shape._aVertex, size);
+
+	_aNormal = new float[size];
+	memcpy(_aNormal, shape._aNormal, size);
+
+	size = _countVertex * sizeFloat * 2;
+	_aTexCoord = new float[size];
+	memcpy(_aTexCoord, shape._aTexCoord, size);
+
+	_countIndex = shape._countIndex;
+
+	size = sizeof(shape._aIndex);
+
+	size = _countIndex * sizeof(unsigned short) * 3;
+
+	_aIndex = new unsigned short[size];
+	memcpy(_aIndex, shape._aIndex, size);
+}
+
 bool Shape::create(const string &name)
 {
 	_name = name;

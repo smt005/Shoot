@@ -53,18 +53,9 @@ void Physics::update()
 	for (vector<PhysicObjectPtr>::iterator it = _objects.begin(); it != _objects.end(); ++it)
 	{
 		PhysicObject* object = (*it).get();
-
 		vec3& _forceVector = object->_forceVector;
-
 		vec3 endForce(_gravity + _forceVector);
-
 		object->applyVector(endForce);
-
-		if (collision(object))
-		{
-
-		}
-
 		_forceVector = vec3(0.0f);
 	}
 }
@@ -96,5 +87,5 @@ bool Physics::collision(PhysicObject* object)
 
 bool Physics::hint(PhysicObject* object, PhysicObject* target)
 {
-
+	return false;
 }

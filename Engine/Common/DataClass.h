@@ -29,7 +29,8 @@ private:
 	static ObjectT _default;
 
 public:
-	static ObjectPtrT& getByName(const string& name);
+	static ObjectPtrT addPtr(const string& name, ObjectT* newItem);
+	static ObjectPtrT getByName(const string& name);
 	static bool hasByName(const string& name);
 
 	static void erase(const string& name);
@@ -55,8 +56,21 @@ void DataClass<ObjectT>::setDefault()
 	setName("DEFAULT_DATA_CLASS");
 }
 
+template<class ObjectT>
+ObjectPtrT DataClass<ObjectT>::addPtr(const string& name, ObjectT* newItem)
+{
+	if (!newItem)
+		return getByName(name);
+
+	ObjectPtrT newItemPtr(newItem);
+	pair<string, ObjectPtrT> objectPair(name, newItemPtr);
+	_map.insert(objectPair);
+
+	return newItemPtr;
+}
+
 template <class ObjectT>
-ObjectPtrT& DataClass<ObjectT>::getByName(const string& name)
+ObjectPtrT DataClass<ObjectT>::getByName(const string& name)
 {
 	auto it = _map.find(name);
 
@@ -73,7 +87,10 @@ ObjectPtrT& DataClass<ObjectT>::getByName(const string& name)
 	}
 
 	ObjectPtrT newItemPtr(newItem);
-	return _map[name] = newItemPtr;
+	pair<string, ObjectPtrT> objectPair(name, newItemPtr);
+	_map.insert(objectPair);
+
+	return newItemPtr;
 }
 
 template <class ObjectT>

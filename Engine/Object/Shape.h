@@ -60,11 +60,16 @@ private:
 	MeshPhysic* _physic = nullptr;
 
 public:
+	Shape() {};
+	Shape(const Shape& shape);
+	Shape& operator=(const Shape& shape);
+	void copy(const Shape& shape);
+
 	virtual ~Shape();
-    
+
 	bool create(const string &name) override;
 	bool load(const string& name);
-
+	
 	MeshPhysic* getPhysic() { return _physic; };
 	void setScale(float* scale);
 };
