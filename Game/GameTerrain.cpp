@@ -49,7 +49,7 @@ void GameTerrain::update()
 	pos.z += 5.0f;
 	Camera::current.setPos(pos);
 
-	vec3 posCursor = Camera::current.corsorCoordZ();
+	vec3 posCursor = Camera::current.corsorCoord();
 
 	Object& object = help::find(_mapPtr->getObjects(), "MapArena");
 	object.setPos(posCursor);
@@ -60,8 +60,6 @@ void GameTerrain::update()
 		if (glider)
 		{
 			vec3 posGlider = glider->getPos();
-			vec3 posCursor = Camera::current.corsorCoordZ();
-
 			vec3 vector(normalize(posCursor - posGlider));
 			_ai->setVector(vector);
 		}
@@ -131,11 +129,9 @@ void GameTerrain::initDraw()
 	DrawEngine::initDrawLines();
 
 	Camera::current.setDefault();
-	Camera::current.setSpeed(0.1f);
-	Camera::current.setCalcFrustum(false);
+	Camera::current.setSpeed(1.0f);
+	Camera::current.setDist(20.0f);
 
-	//Camera::current.setFromEye(false);
-	Camera::current.setDist(25.0f);
 	//Camera::current.setVector(vec3(1.0f, 1.0f, -1.0f));
 }
 
@@ -273,40 +269,37 @@ void GameTerrain::controllCamera()
 	if (!Callback::key[VK_CONTROL])
 		return;
 
-	float speedCamera = 1.0f;
-	if (Callback::key[VK_SHIFT])
-	{
-		speedCamera = 0.125f;
-	}
+	float speedCamera = Callback::key[VK_SHIFT] ? 1.0f : speedCamera = 0.125f;
+	Camera::current.setSpeed(speedCamera);
 
 	if (Callback::key['W'])
 	{
-		Camera::current.move(CAMERA_FORVARD, speedCamera);
+		Camera::current.move(CameraMove::FORVARD);
 	}
 
 	if (Callback::key['S'])
 	{
-		Camera::current.move(CAMERA_BACK, speedCamera);
+		Camera::current.move(CameraMove::BACK);
 	}
 
 	if (Callback::key['A'])
 	{
-		Camera::current.move(CAMERA_RIGHT, speedCamera);
+		Camera::current.move(CameraMove::RIGHT);
 	}
 
 	if (Callback::key['D'])
 	{
-		Camera::current.move(CAMERA_LEFT, speedCamera);
+		Camera::current.move(CameraMove::LEFT);
 	}
 
 	if (Callback::key['R'])
 	{
-		Camera::current.move(CAMERA_TOP, speedCamera);
+		Camera::current.move(CameraMove::TOP);
 	}
 
 	if (Callback::key['F'])
 	{
-		Camera::current.move(CAMERA_DOWN, speedCamera);
+		Camera::current.move(CameraMove::DOWN);
 	}
 }
 

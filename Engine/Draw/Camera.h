@@ -1,82 +1,107 @@
+#ifndef __CAMERA_H__
+#define __CAMERA_H__
+
 #pragma once
 
-#include "../Common/IncludesMatem.h"
+#include <glm\vec3.hpp>
+#include <glm\mat4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-using namespace glm;
-
-#define CAMERA_FORVARD			1
-#define CAMERA_BACK				2
-#define CAMERA_LEFT				3
-#define CAMERA_RIGHT			4
-#define CAMERA_TOP				5
-#define CAMERA_DOWN				6
-#define CAMERA_HORIZONT			7
-#define CAMERA_BACK_HORIZONT	8
-
-class Camera
+enum class CameraMove
 {
-private:
-	mat4x4 _matProject;
-	mat4x4 _matView;
-	mat4x4 _matProjectView;
-	vec4 _frustum[6];
+	NONE,
+	FORVARD,
+	BACK,
+	LEFT,
+	RIGHT,
+	TOP,
+	DOWN,
+	HORIZONT,
+	BACK_HORIZONT
+};
 
-	bool _calcFrustum = false;
-	bool _fromEye = true;
-	float _dist = 10.0f;
-	vec3 _pos;
-	vec3 _vector;
-	float _speed = 0.00001f;
-	float _speedRotate = 0.01f;
-
-	void makeMatProjectView();
-	void makeFrustum();
-
+class Camera final
+{
 public:
 	Camera();
-	~Camera();
+
+	inline const glm::mat4x4& getMatProject()		{ return _matProject; };
+	inline const glm::mat4x4& getMatView()			{ return _matView; };
+	inline const glm::mat4x4& getMatProjectView()	{ return _matProjectView; };
+
+	inline const bool& fromEye()		{ return _fromEye; };
+	inline const bool& calcFrustum()		{ return _calcFrustum; };
+	inline const glm::vec3& getTarget()	{ return _target; };
+	inline const glm::vec3& getEye()	{ return _eye; };
+	inline const glm::vec3& getVector()	{ return _vec; };
+	inline const float& getDist()		{ return _dist; };
+	inline const float& speed()			{ return _speed; }
+	inline const float& speedRotate()	{ return _speedRotate; }
+
+	inline const float* matProjectViewFloat() { return glm::value_ptr(_matProjectView); }
+	inline const float* matP() { return glm::value_ptr(_matProject); }
+	inline const float* matPV() { return glm::value_ptr(_matProjectView); }
+	
+	inline const float* matPVM(const glm::mat4x4 &matModel)
+	{
+		_matPVM = _matProjectView * matModel;
+		return glm::value_ptr(_matPVM);
+	}
+
+	inline  void setFromEye(const bool& state) { _fromEye = state; };
+	inline  void setTarget(const glm::vec3& target) { _target = target; };
+	inline void setEye(const glm::vec3& eye) { _eye = eye; };
+	inline  inline void setSpeed(const float speed) { _speed = speed; };
+	inline void setSpeedRotate(const float speedRotate) { _speedRotate = speedRotate; };
+	inline void setCalcFrustum(const bool& state) { _calcFrustum = state; };
+
+	void setVector();
+	void setVector(const glm::vec3& vec);
+	void setDist(const float& dist);
+	
+	void setPos(const glm::vec3& pos);
+	void setOffset(const glm::vec3& offset);
+
 	void setDefault();
-
-	const mat4x4& matProject() { return _matProject; }
-	const mat4x4& matView() { return _matView; }
-	const mat4x4& matProjectView() { return _matProjectView; }
-	const float* matProjectViewFloat() { return value_ptr(_matProjectView); }
-	const float* matP() { return value_ptr(_matProject); }
-	const float* matPV() { return value_ptr(_matProjectView); }
-	const float* matPVM(const mat4x4 &matModel);
-
-	float frustum(const mat4x4 &mat, const float &radius);
-
+	void setLookAt(const glm::vec3& eye, const glm::vec3& target);
 	void setOrtho(const float left, const float right, const float bottom, const float top);
 	void setPerspective(const float fov, const float aspect, const float zNear, const float zFar);
-	void setLookAt(const vec3 &eye, const vec3 &center);
-	void setLookAt(const vec3 &pos, const vec3 &vector, const float dist);
+	void makeFrustum();
 
-	const bool& calcFrustum() { return _calcFrustum; }
-	const bool& fromEye() { return _fromEye; }
-	const float& dist() { return _dist; }
-	const vec3& pos() { return _pos; }
-	const vec3& vector() { return _vector; }
-	const float& speed() { return _speed; }
-	const float& speedRotate() { return _speedRotate; }
+	inline void makeMatProjectView()
+	{
+		_matProjectView = _matProject * _matView;
+		if (_calcFrustum)
+			makeFrustum();
+	}
 
-	void setCalcFrustum(const bool calcFrustum);
-	void setFromEye(const bool fromEye);
-	void setDist(const float dist);
-	void setVector(const vec3 &vector);
-	void setPos(const vec3 &pos);
-	void setSpeed(const float speed) { _speed = speed; };
-	void setSpeedRotate(const float speedRotate) { _speedRotate = speedRotate; };
+	void move(const CameraMove direct);
+	void move(const glm::vec2& direct);
+	void rotate(const glm::vec2& angles);
 
-	void move(const int direct, float speed = 0);
-	void move(const vec2 &direct);
-	void rotate(const vec2 &angles);
-	
-	vec3 corsorCoordZ();
+	glm::vec3 corsorCoord();
 
-	// STATIC
-	static mat4x4 _matPVM;
+private:
+	glm::mat4x4 _matProject;
+	glm::mat4x4 _matView;
+	glm::mat4x4 _matProjectView;
+
+	glm::vec3 _target;
+	glm::vec3 _eye;
+	glm::vec3 _vec;
+	float _dist;
+
+	bool _calcFrustum;
+	bool _fromEye;
+	float _speed;
+	float _speedRotate;
+
+private:
+	static glm::vec4 _frustum[6];
+	static glm::mat4x4 _matPVM;
+
+public:
 	static Camera current;
-	static Camera& setCurrent(Camera& camera);
-
 };
+
+#endif //	__CAMERA_H__
