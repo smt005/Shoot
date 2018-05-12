@@ -11,9 +11,6 @@ using namespace std;
 
 // TODO:
 class PhysicObject;
-
-class btCollisionShape;
-class btBvhTriangleMeshShape;
 class Shape;
 typedef std::shared_ptr<Shape> ShapePtr;
 
@@ -23,11 +20,11 @@ class Mesh
 {
 public:
 	unsigned short int _countVertex = 0;
+	unsigned short int _countIndex = 0;
+
 	float* _aVertex = nullptr;
 	float* _aNormal = nullptr;
 	float* _aTexCoord = nullptr;
-
-	unsigned short int _countIndex = 0;
 	unsigned short* _aIndex = nullptr;
 
 	bool _hasVBO = false;
@@ -46,9 +43,6 @@ class MeshPhysic
 public:
 	unsigned short int _count = 0;
 	Mesh* _meshes = nullptr;
-
-	btCollisionShape* _collisionShape = nullptr;
-	btBvhTriangleMeshShape* _triangleMeshShape = nullptr;
 
 public:
 	virtual ~MeshPhysic();

@@ -27,11 +27,8 @@ public:
 	virtual ~AIInterface() { }
 	virtual void action() { }
 
-private:
-	void setGlider(Glider* glider)
-	{
-		_glider = glider;
-	}
+	inline void setGlider(Glider* glider) { _glider = glider; }
+	inline Glider* getGlider() { return _glider; }
 
 protected:
 	Glider* _glider;
@@ -48,6 +45,8 @@ struct GliderTemplate
 	float _speedHeight = 0.01f;
 	float _speed = 0.05f;
 	float _speedRotate = 0.1f;
+
+	float maxSpeed = 0.1f;
 };
 
 //---
@@ -72,12 +71,12 @@ private:
 	AIptr _ai;
 	GunPtr _gunPtr;
 
-	vec3 _needVector = vec3(1.0f, 0.0f, 0.0f);
-	bool _commands[GLIDER_COUNT_COMMAND];
-
 	bool _live = true;
 	float _speedHeight;
 	float _speed = 0.0f;
+
+	vec3 _needVector = vec3(1.0f, 0.0f, 0.0f);
+	bool _commands[GLIDER_COUNT_COMMAND];
 
 public:
 	Glider();
@@ -97,6 +96,8 @@ public:
 	void action();
 	void move(PhysicObject& physicObject, const glm::vec3 &vector);
 	void rotate(PhysicObject& physicObject, const glm::vec3 &vector);
+	void move(const glm::vec3 &vector);
+	void rotate(const glm::vec3 &vector);
 	void height();
 	void shoot();
 

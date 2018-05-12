@@ -2,6 +2,7 @@
 #include "Shape.h"
 #include "GL/glew.h"
 #include "../../App/File.h"
+#include "../Common/Log.h"
 
 //	Mesh
 
@@ -285,6 +286,11 @@ struct BlockTemporary
 	}
 };
 
+Shape::Shape(const Shape& shape)
+{
+	copy(shape);
+}
+
 Shape::~Shape()
 {
 	if (_physic)
@@ -292,11 +298,6 @@ Shape::~Shape()
 		delete _physic;
 		_physic = nullptr;
 	}
-}
-
-Shape::Shape(const Shape& shape)
-{
-	copy(shape);
 }
 
 Shape& Shape::operator=(const Shape& shape)

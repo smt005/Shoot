@@ -1,12 +1,14 @@
 #include "Gun.h"
 #include "Shell.h"
 #include "../App/App.h"
+#include "../Common/Log.h"
 
 Gun::Gun(const int gliderId, const string& nameModel)
 {
 	_gliderId = gliderId;
 	_nameModel = nameModel;
 }
+
 void Gun::shoot( const glm::vec3& pos, const glm::vec3& vector)
 {
 	if (!_model)

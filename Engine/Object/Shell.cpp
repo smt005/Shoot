@@ -8,13 +8,14 @@ using namespace glm;
 
 deque<Shell*> Shell::_shells;
 
-Shell::Shell(const vec3& pos, const vec3& vector, const int gliderId, ModelPtr& model)
+Shell::Shell(const vec3& pos, const vec3& vector, const int gliderId, ModelPtr& model):
+	_time(App::getCurentTime()),
+	_gliderId(gliderId)
 {
 	setPos(pos);
 	_vector = vector;
 	_vector.z = 0.0f;
-	_time = App::getCurentTime();
-	_gliderId = gliderId;
+
 	_model = model;
 }
 

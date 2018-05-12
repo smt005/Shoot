@@ -11,8 +11,11 @@
 #include "../Engine/Object/Object.h"
 #include "../Engine/Object/Model.h"
 #include "../Engine/Object/Shape.h"
+#include "../Engine/Object/Gun.h"
 #include "../Engine/Common/Help.h"
 #include "../Engine/Common/IncludesMatem.h"
+
+#include "../Engine/Common/Log.h"
 
 GameTerrain::GameTerrain()
 {
@@ -28,7 +31,7 @@ bool GameTerrain::init()
 	initDraw();
 	initCallback();
 
-	const char* shaderSource = File::loadText("fragmentLink");
+	testFunction();
 
 	return true;
 }
@@ -37,7 +40,7 @@ void GameTerrain::save()
 {
 }
 
-void GameTerrain::onFrame()
+void GameTerrain::update()
 {
 	_mapPtr->action();
 
@@ -45,6 +48,24 @@ void GameTerrain::onFrame()
 	vec3 pos = glider.getPos();
 	pos.z += 5.0f;
 	Camera::current.setPos(pos);
+
+	vec3 posCursor = Camera::current.corsorCoordZ();
+
+	Object& object = help::find(_mapPtr->getObjects(), "MapArena");
+	object.setPos(posCursor);
+
+	if (_ai)
+	{
+		Glider* glider = _ai->getGlider();
+		if (glider)
+		{
+			vec3 posGlider = glider->getPos();
+			vec3 posCursor = Camera::current.corsorCoordZ();
+
+			vec3 vector(normalize(posCursor - posGlider));
+			_ai->setVector(vector);
+		}
+	}
 }
 
 void GameTerrain::draw()
@@ -91,12 +112,15 @@ void GameTerrain::initMap()
 	GliderTemplate* gliderTemplate = new GliderTemplate();
 	gliderTemplate->_maxHeight = 4.0f;
 	gliderTemplate->_minHeight = 3.0f;
-	gliderTemplate->_speed = 0.01f;
+	gliderTemplate->_speed = 0.02f;
 	gliderTemplate->_speedRotate = 0.05f;
 	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
 
 	_ai = new AiControll();
 	glider.setAi(_ai);
+
+	Object& object = _mapPtr->addObject("Box001");
+	object.setName("testbox");
 }
 
 void GameTerrain::initDraw()
@@ -110,14 +134,16 @@ void GameTerrain::initDraw()
 	Camera::current.setSpeed(0.1f);
 	Camera::current.setCalcFrustum(false);
 
-	Camera::current.setFromEye(false);
-	Camera::current.setDist(15.0f);
+	//Camera::current.setFromEye(false);
+	Camera::current.setDist(25.0f);
+	//Camera::current.setVector(vec3(1.0f, 1.0f, -1.0f));
 }
 
 void GameTerrain::initCallback()
 {
 	//addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
 	addCallback(EventCallback::MOVE, Function(rotateCamera));
+
 	addCallback(EventCallback::TAP_PINCH, Function(shoot));
 	addCallback(EventCallback::BUTTON_UP, Function(pressButton));
 	addCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
@@ -142,8 +168,7 @@ bool GameTerrain::rotateCamera(void *data)
 {
 	Camera::current.rotate(Callback::vector);
 
-	if (_ai)
-		_ai->setVector(Camera::current.vector());
+	//_ai->setVector(Camera::current.vector());
 
 	return true;
 }
@@ -207,6 +232,9 @@ void GameTerrain::addObject(const string& name)
 
 void GameTerrain::controlGlider()
 {
+	if (Callback::key[VK_CONTROL])
+		return;
+
 	if (!_ai)
 		return;
 
@@ -242,42 +270,104 @@ void GameTerrain::controlGlider()
 
 void GameTerrain::controllCamera()
 {
+	if (!Callback::key[VK_CONTROL])
+		return;
+
 	float speedCamera = 1.0f;
 	if (Callback::key[VK_SHIFT])
 	{
 		speedCamera = 0.125f;
 	}
 
-	if (Callback::key[VK_CONTROL])
+	if (Callback::key['W'])
 	{
-		if (Callback::key['W'])
-		{
-			Camera::current.move(CAMERA_FORVARD, speedCamera);
-		}
-
-		if (Callback::key['S'])
-		{
-			Camera::current.move(CAMERA_BACK, speedCamera);
-		}
-
-		if (Callback::key['A'])
-		{
-			Camera::current.move(CAMERA_RIGHT, speedCamera);
-		}
-
-		if (Callback::key['D'])
-		{
-			Camera::current.move(CAMERA_LEFT, speedCamera);
-		}
-
-		if (Callback::key['R'])
-		{
-			Camera::current.move(CAMERA_TOP, speedCamera);
-		}
-
-		if (Callback::key['F'])
-		{
-			Camera::current.move(CAMERA_DOWN, speedCamera);
-		}
+		Camera::current.move(CAMERA_FORVARD, speedCamera);
 	}
+
+	if (Callback::key['S'])
+	{
+		Camera::current.move(CAMERA_BACK, speedCamera);
+	}
+
+	if (Callback::key['A'])
+	{
+		Camera::current.move(CAMERA_RIGHT, speedCamera);
+	}
+
+	if (Callback::key['D'])
+	{
+		Camera::current.move(CAMERA_LEFT, speedCamera);
+	}
+
+	if (Callback::key['R'])
+	{
+		Camera::current.move(CAMERA_TOP, speedCamera);
+	}
+
+	if (Callback::key['F'])
+	{
+		Camera::current.move(CAMERA_DOWN, speedCamera);
+	}
+}
+
+class ClassTestBase
+{
+	string strB;
+public:
+	virtual void fB() {};
+};
+
+class ClassTest : public Object
+{
+	GliderTemplatePtr _template;
+	AIptr _ai;
+	GunPtr _gunPtr;
+
+	bool _live = true;
+	float _speedHeight;
+	float _speed = 0.0f;
+	vec3 _needVector;
+	bool _commands[GLIDER_COUNT_COMMAND];
+
+	virtual void f() {};
+};
+
+void GameTerrain::testFunction()
+{
+	LOG("\n");
+
+	LOG_SIZE_STRUCT("ClassTestBase", ClassTestBase());
+	LOG_SIZE_STRUCT("ClassTest", ClassTest());
+
+	LOG("\n");
+
+	LOG_SIZE_STRUCT("int", int());
+	LOG_SIZE_STRUCT("double", double());
+
+	LOG("\n");
+
+	LOG_SIZE_STRUCT("string", string());
+	LOG_SIZE_STRUCT("vec3", vec3());
+	LOG_SIZE_STRUCT("mat4x4", mat4x4());
+	
+	LOG("\n");
+
+	LOG_SIZE_STRUCT("ShapePtr", ShapePtr(new Shape()));
+	LOG_SIZE_STRUCT("shared_ptr<Shape>", shared_ptr<Shape>(new Shape()));
+	LOG_SIZE_STRUCT("shared_ptr<int>", shared_ptr<int>(new int()));
+
+	LOG("\n");
+
+	LOG_SIZE_STRUCT("Texture", Texture());
+	LOG_SIZE_STRUCT("MeshPhysic", MeshPhysic());
+	LOG_SIZE_STRUCT("PhysicObject", PhysicObject());
+	LOG_SIZE_STRUCT("Model", Model());
+	LOG_SIZE_STRUCT("Mesh", Mesh());
+	LOG_SIZE_STRUCT("Shape", Shape());
+	LOG_SIZE_STRUCT("Object", Object());
+	LOG_SIZE_STRUCT("Glider", Glider());
+	LOG_SIZE_STRUCT("Gun", Gun());
+	LOG_SIZE_STRUCT("Map", Map());
+
+	LOG("\n");
 }

@@ -100,7 +100,7 @@ void DrawEngine::prepareDraw(bool clear)
 {
 	int widthScreen = App::width();
 	int heightScreen = App::height();
-	glViewport(0.0, 0.0, widthScreen, heightScreen);
+	glViewport(0, 0, widthScreen, heightScreen);
 
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);

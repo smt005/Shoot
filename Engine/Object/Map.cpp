@@ -8,11 +8,6 @@
 #include "../../App/File.h"
 #include "../Common/Help.h"
 
-Map::Map()
-{
-
-}
-
 Map::~Map()
 {
 	help::clear(_objects);
@@ -108,13 +103,13 @@ void Map::setPhysic()
 		object->setPhysic();
 	}*/
 
-	Object& loc = help::find(_objects, "MapArena");
-	loc.setPhysic();
+	//Object& loc = help::find(_objects, "MapArena");
+	//loc.setPhysic();
 
-	for (auto glider : _gliders)
+	/*for (auto glider : _gliders)
 	{
 		glider->setPhysic();
-	}
+	}*/
 }
 
 void Map::getDataJson(json& dataJson)

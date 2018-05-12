@@ -72,6 +72,8 @@ public:
 	void move(const vec2 &direct);
 	void rotate(const vec2 &angles);
 	
+	vec3 corsorCoordZ();
+
 	// STATIC
 	static mat4x4 _matPVM;
 	static Camera current;

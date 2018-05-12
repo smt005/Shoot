@@ -4,11 +4,6 @@
 #include "glfw3.h"
 #include "FreeImage.h"
 
-Texture::Texture()
-{
-
-}
-
 Texture::~Texture()
 {
 	glDeleteTextures(1, &_id);

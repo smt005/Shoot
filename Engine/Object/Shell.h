@@ -13,15 +13,14 @@ using namespace std;
 class Shell final : public Object
 {
 public:
-	Shell() {};
 	Shell(const glm::vec3& pos, const glm::vec3& vector, const int gliderId, ModelPtr& model);
 
 	bool hasHint();
 
 private:
 	glm::vec3 _vector;
-	double _time;
-	int _gliderId;
+	double _time = 0;
+	int _gliderId = 0;
 
 public:
 	static void add(const glm::vec3& pos, const glm::vec3& vector, const int gliderId, ModelPtr& model);

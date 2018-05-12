@@ -1,6 +1,9 @@
 
 #include "Camera.h"
 #include "../App/App.h"
+#include "../Callback/Callback.h"
+#include "../Common/Log.h"
+#include "../Engine/Physics/PhysicPlane.h"
 
 Camera::Camera()
 {
@@ -321,6 +324,24 @@ void Camera::rotate(const vec2 &angles)
 
 	setVector(vector);
 }
+
+vec3 Camera::corsorCoordZ()
+{
+	glm::vec3 wincoord = glm::vec3(Callback::pos.x - App::pos().x, (App::height() - Callback::pos.y) + App::pos().y, 1.0f);
+	glm::vec4 viewport = glm::vec4(0, 0, App::width(), App::height());
+
+	glm::vec3 coord = glm::unProject(wincoord, _matView, _matProject, viewport);
+
+	vec3 vecCursor(_pos.x - coord.x, _pos.y - coord.y, _pos.z - coord.z);
+	vecCursor = normalize(vecCursor);
+
+	PhysicPlane plane;
+	plane.set(vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f));
+
+	vec3 objcoord = plane.crossVector(vecCursor, _pos);
+
+	return objcoord;
+};
 
 //---------------------------------------------------------------------------------------------
 

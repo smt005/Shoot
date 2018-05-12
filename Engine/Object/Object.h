@@ -14,33 +14,26 @@ using namespace glm;
 class Model;
 typedef std::shared_ptr<Model> ModelPtr;
 
-enum ObjectType
-{
-	PHYSIC_DEFAULT = 0,
-	PHYSIC_GENERATOR,
-	PHYSIC_CAR
-};
+class Object;
+typedef std::shared_ptr<Object> ObjectPtr;
 
 class Object: public CallbackObject
 {
-//private:
 protected:
-	ObjectType _type = ObjectType::PHYSIC_DEFAULT;
 	string _name;
 	mat4x4 _matrix = mat4x4(1.0f);
 	ModelPtr _model;
-
+	
 	PhysicType _physicType = PhysicType::NONE;
 	PhysicObjectWptr _physic;
 
 public:
-	Object();
+	Object() {};
 	Object(const string &name, const string &modelName, PhysicType physicType = PhysicType::NONE, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
 	virtual ~Object();
 
 	void setName(const string& name) { _name = name; };
 
-	const ObjectType& type() { return _type; };
 	const string& name() { return _name; };
 	const mat4x4& getMatrix() { return _matrix; };
 	const float* matrixFloat() { return value_ptr(_matrix); };

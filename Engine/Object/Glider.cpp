@@ -42,8 +42,8 @@ void Glider::setAi(AIInterface* ai)
 
 void Glider::action()
 {
-	if (_physic.expired())
-		return;
+	//if (_physic.expired())
+	//	return;
 
 	if (_ai)
 		_ai->action();
@@ -83,7 +83,7 @@ void Glider::action()
 
 	//---
 
-	PhysicObjectPtr physic = _physic.lock();
+	//PhysicObjectPtr physic = _physic.lock();
 	//height();
 	
 	if (countVectors > 0)
@@ -91,15 +91,16 @@ void Glider::action()
 		if (length(moveVector) > 0.0f)
 		{
 			moveVector /= countVectors;
+			moveVector.z = 0.0f;
 		}
 	}
-	else
+	/*else
 	{
 		if (!_commands[GliderCommand::FOWARD] && !_commands[GliderCommand::BACK] && !_commands[GliderCommand::LEFT] && !_commands[GliderCommand::RIGHT])
 		{
 			moveVector = -physic->getSpeed();
 		}
-	}
+	}*/
 
 	if (glm::length(moveVector) != 0.0f)
 	{
@@ -112,14 +113,16 @@ void Glider::action()
 		moveVector.z = 0.0f;
 	}
 
-	move(*physic, moveVector);
-	rotate(*physic, _needVector);
+	//move(*physic, moveVector);
+	//rotate(*physic, _needVector);
+	move(moveVector);
+	rotate(_needVector);
 
 	if (_commands[GliderCommand::SHOOT])
 		shoot();
 
 	resetCommand();
-	_matrix = _physic.lock()->getWorldTransform();
+	//_matrix = _physic.lock()->getWorldTransform();
 }
 
 void Glider::move(PhysicObject& physicObject, const glm::vec3 &vector)
@@ -128,29 +131,47 @@ void Glider::move(PhysicObject& physicObject, const glm::vec3 &vector)
 		return;
 
 	glm::vec3 offsetVector = vector * _template->_speed;
-	offsetVector.z = 0.0f;
+	
+	float angleFactorT = 999.0f;
 
+	if (physicObject.getSpeedf() > _template->maxSpeed)
+	{
+		vec3 speed = glm::normalize(physicObject.getSpeed());
+		float angleFactor = math::angleFactorZ(speed, vector);
+		angleFactor = pow(angleFactor, 2);
+		offsetVector *= angleFactor;
+	
+		angleFactorT = angleFactor;
+	}
+	
+	LOGI("LOG: angleFactorT = %f ", angleFactorT);
+	LOGI(" speed = %f\n", physicObject.getSpeedf());
+
+	offsetVector.z = 0.0f;
 	physicObject.addForce(offsetVector);
+}
+
+void Glider::move(const glm::vec3 &vector)
+{
+	if (glm::length(vector) == 0.0f)
+		return;
+
+	glm::vec3 offsetVector = vector * _template->_speed;
+	offsetVector *= 50.0f;
+
+	_matrix[3][0] += offsetVector.x;
+	_matrix[3][1] += offsetVector.y;
+	_matrix[3][2] += offsetVector.z;
 }
 
 void Glider::rotate(PhysicObject& physicObject, const glm::vec3 &vector)
 {
-	// TODO:
-
 	if (length(vector) == 0.0f)
 		return;
 
 	vec3 vectorGlider = getVector();
 
-	float am = glm::length(vector) * glm::length(vectorGlider);
-	if (am == 0.0f)
-		return;
-
-	float ab = vector.x * vectorGlider.x + vector.y * vectorGlider.y;
-	float angle = ab / am;
-
-	if (angle == 0.0f)
-		return;
+	float angle = math::angleCosZ(vector, vectorGlider);
 
 	float absAngle = abs(angle);
 	if (absAngle < 0.1)
@@ -163,6 +184,25 @@ void Glider::rotate(PhysicObject& physicObject, const glm::vec3 &vector)
 	physicObject.setAngle(angle, vectorMatrix);
 }
 
+void Glider::rotate(const glm::vec3 &vector)
+{
+	if (length(vector) == 0.0f)
+		return;
+
+	vec3 vectorGlider = getVector();
+
+	float angle = math::angleCosZ(vector, vectorGlider);
+
+	float absAngle = abs(angle);
+	if (absAngle < 0.1)
+		return;
+
+	float side = angle / absAngle;
+	angle = _template->_speedRotate * side;
+
+	vec3 vectorMatrix(0.0f, 0.0f, 1.0f);
+	_matrix = glm::rotate(_matrix, angle, vectorMatrix);
+}
 void Glider::height()
 {
 	float height = getHeight();

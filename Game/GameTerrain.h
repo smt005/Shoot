@@ -29,7 +29,7 @@ public:
 
 	bool init() override;
 	void save() override;
-	void onFrame() override;
+	void update() override;
 	void draw() override;
 
 	void initMap();
@@ -47,4 +47,6 @@ private:
 
 	void controlGlider();
 	void controllCamera();
+
+	void testFunction();
 };

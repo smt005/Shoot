@@ -3,11 +3,7 @@
 #include "Model.h"
 #include "Shape.h"
 #include "../Physics/Physics.h"
-
-Object::Object()
-{
-
-}
+#include "../Common/Log.h"
 
 Object::Object(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos, const json &data)
 {

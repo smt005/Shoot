@@ -23,7 +23,7 @@ void Game::save()
 
 }
 
-void Game::onFrame()
+void Game::update()
 {
 
 }

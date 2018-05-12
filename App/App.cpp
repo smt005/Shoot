@@ -12,6 +12,8 @@
 #include <string>
 using namespace std;
 
+using namespace glm;
+
 AppConfig App::_appConfig;
 
 int App::_width;
@@ -114,7 +116,7 @@ int App::execution(const char* exeFile)
 	{
 		actionOnFrame();
 
-		game->onFrame();
+		game->update();
 		game->draw();
 
 		glfwSwapBuffers(_window);
@@ -272,6 +274,14 @@ void App::keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int
 AppConfig& App::getAppConfig()
 {
 	return _appConfig;
+}
+
+vec2 App::pos()
+{
+	int xpos, ypos;
+	glfwGetWindowPos(_window, &xpos, &ypos);
+
+	return vec2(xpos, ypos);
 }
 
 //---

@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "../../App/File.h"
+#include "../Common/Log.h"
 
 #define FILE_NAME_MODEL_DATA	"Models/Models.json"
 #define FILE_NAME_SHAPE_FILE	"Models/Box1.obj"
@@ -9,6 +10,7 @@ Shape& Model::getShape()
 {
 	if (_shape) return *_shape;
 	_shape = Shape::getByName(_name);
+
 	return *_shape;
 }
 

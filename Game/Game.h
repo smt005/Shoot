@@ -8,7 +8,7 @@ public:
 
 	virtual bool init();
 	virtual void save();
-	virtual void onFrame();
+	virtual void update();
 	virtual void draw();
 
 public:

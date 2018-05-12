@@ -14,7 +14,6 @@ class Object;
 class Glider;
 class Map;
 
-//typedef std::shared_ptr<Glider> GliderPtr;
 typedef std::shared_ptr<Map> MapPtr;
 
 class Map : public DataClass <Map>
@@ -26,7 +25,6 @@ public:
 	std::vector<Object*> _objects;
 	std::vector<Glider*> _gliders;
 
-	Map();
 	virtual ~Map();
 
 	const float& getArea() { return _area; };

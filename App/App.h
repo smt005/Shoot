@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/vec2.hpp>
+
 struct GLFWwindow;
 class AppConfig;
 
@@ -16,6 +18,7 @@ public:
 	static inline int width() { return _width; };
 	static inline int height() { return _height; };
 	static inline float aspect() { return _aspect; };
+	static glm::vec2 pos();
 
 private:
 	static void actionOnFrame();

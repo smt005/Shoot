@@ -35,9 +35,10 @@ public:
 	mat4x4 getWorldTransform();
 
 	inline const vec3& getSpeed() { return _speedVector; }
+	inline float getSpeedf() { return glm::length(_speedVector); }
 	inline const PhysicPlane* getPlanes() { return _planes; }
 	inline vec3 getPos() { return vec3(_mat[3][0], _mat[3][1], _mat[3][2]); }
-
+	
 	void setMatrix(const mat4x4& mat);
 	void setPos(const vec3& pos);
 	void setVector(const vec3& vec);
@@ -62,6 +63,5 @@ private:
 	float _mass = 1.0f;
 
 	vec3 _speedVector = vec3(0.0f);
-
 	vec3 _forceVector = vec3(0.0f);
 };

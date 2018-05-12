@@ -12,11 +12,10 @@ typedef std::shared_ptr<Texture> TexturePtr;
 class Texture: public DataClass <Texture>
 {
 private:
-	string _fileName;
 	unsigned int _id = 0;
 
 public:
-	Texture();
+	Texture() {};
 	Texture(const string &name, bool needLoad = true);
 	virtual ~Texture();
 

@@ -5,6 +5,7 @@
 //#include <cmath>
 
 #include "../Common/IncludesMatem.h"
+using namespace glm;
 
 struct PhysicPlane
 {
@@ -13,7 +14,12 @@ private:
 	float bottomValue;
 
 public:
-	void set(float* p1, float* p2, float* p3)
+	inline void set(const vec3& p1, const vec3& p2, const vec3& p3)
+	{
+		set(glm::value_ptr(p1), glm::value_ptr(p2), glm::value_ptr(p3));
+	}
+
+	void set(const float* p1, const float* p2, const float* p3)
 	{
 		float x1 = p1[0];
 		float y1 = p1[1];
@@ -44,6 +50,25 @@ public:
 	inline float dist(const float* pos)
 	{
 		return (a * pos[0] + b * pos[1] + c * pos[2]) / bottomValue;
+	}
+
+	inline float distByVector(const vec3& vector, const vec3& pos = vec3(0.0f))
+	{
+		return distByVector(value_ptr(vector), value_ptr(pos));
+	}
+
+	inline float distByVector(const float* vector, const float* pos)
+	{
+		return -(a * pos[0] + b * pos[1] + c * pos[2] + d) / (a * vector[0] + b * vector[1] + c * vector[2]);
+	}
+
+	vec3 crossVector(const vec3& vector, const vec3& pos = vec3(0.0f))
+	{
+		float dist = distByVector(vector, pos);
+
+		return vec3 (pos.x + vector.x * dist,
+					 pos.y + vector.y * dist,
+					 pos.z + vector.z * dist);
 	}
 
 	//help
