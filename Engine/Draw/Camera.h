@@ -29,18 +29,18 @@ public:
 	inline const glm::mat4x4& getMatView()			{ return _matView; };
 	inline const glm::mat4x4& getMatProjectView()	{ return _matProjectView; };
 
-	inline const bool& fromEye()		{ return _fromEye; };
-	inline const bool& calcFrustum()		{ return _calcFrustum; };
+	inline bool fromEye()		{ return _fromEye; };
+	inline bool calcFrustum()	{ return _calcFrustum; };
 	inline const glm::vec3& getTarget()	{ return _target; };
 	inline const glm::vec3& getEye()	{ return _eye; };
 	inline const glm::vec3& getVector()	{ return _vec; };
-	inline const float& getDist()		{ return _dist; };
-	inline const float& speed()			{ return _speed; }
-	inline const float& speedRotate()	{ return _speedRotate; }
+	inline float getDist()		{ return _dist; };
+	inline float speed()		{ return _speed; }
+	inline float speedRotate()	{ return _speedRotate; }
 
-	inline const float* matProjectViewFloat() { return glm::value_ptr(_matProjectView); }
-	inline const float* matP() { return glm::value_ptr(_matProject); }
-	inline const float* matPV() { return glm::value_ptr(_matProjectView); }
+	inline const float* matProjectViewFloat()	{ return glm::value_ptr(_matProjectView); }
+	inline const float* matP()					{ return glm::value_ptr(_matProject); }
+	inline const float* matPV()					{ return glm::value_ptr(_matProjectView); }
 	
 	inline const float* matPVM(const glm::mat4x4 &matModel)
 	{
@@ -48,12 +48,12 @@ public:
 		return glm::value_ptr(_matPVM);
 	}
 
-	inline  void setFromEye(const bool& state) { _fromEye = state; };
-	inline  void setTarget(const glm::vec3& target) { _target = target; };
-	inline void setEye(const glm::vec3& eye) { _eye = eye; };
-	inline  inline void setSpeed(const float speed) { _speed = speed; };
-	inline void setSpeedRotate(const float speedRotate) { _speedRotate = speedRotate; };
-	inline void setCalcFrustum(const bool& state) { _calcFrustum = state; };
+	inline void setFromEye(const bool& state)			{ _fromEye = state; };
+	inline void setTarget(const glm::vec3& target)		{ _target = target; };
+	inline void setEye(const glm::vec3& eye)			{ _eye = eye; };
+	inline void setSpeed(const float speed)		{ _speed = speed; };
+	inline void setSpeedRotate(const float speedRotate)	{ _speedRotate = speedRotate; };
+	inline void setCalcFrustum(const bool& state)		{ _calcFrustum = state; };
 
 	void setVector();
 	void setVector(const glm::vec3& vec);

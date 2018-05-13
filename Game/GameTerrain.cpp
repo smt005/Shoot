@@ -31,7 +31,7 @@ bool GameTerrain::init()
 	initDraw();
 	initCallback();
 
-	testFunction();
+	//testFunction();
 
 	return true;
 }
@@ -46,12 +46,13 @@ void GameTerrain::update()
 
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");
 	vec3 pos = glider.getPos();
+	pos.x -= 4.0f;
 	pos.z += 5.0f;
 	Camera::current.setPos(pos);
 
 	vec3 posCursor = Camera::current.corsorCoord();
 
-	Object& object = help::find(_mapPtr->getObjects(), "MapArena");
+	Object& object = help::find(_mapPtr->getObjects(), "aim");
 	object.setPos(posCursor);
 
 	if (_ai)
@@ -104,21 +105,28 @@ void GameTerrain::initMap()
 	_mapPtr->setPhysic();
 	Physics::setGravity(vec3(0.0f, 0.0f, 0.0f));
 
-	// Glider
+	initGlider();
+}
+
+void GameTerrain::initGlider()
+{
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");
 
 	GliderTemplate* gliderTemplate = new GliderTemplate();
-	gliderTemplate->_maxHeight = 4.0f;
-	gliderTemplate->_minHeight = 3.0f;
-	gliderTemplate->_speed = 0.02f;
-	gliderTemplate->_speedRotate = 0.05f;
+	gliderTemplate->maxHeight = 3.1f;
+	gliderTemplate->minHeight = 3.0f;
+	gliderTemplate->speedHeight = 0.0025f;
+	gliderTemplate->speed = 0.25f;
+	gliderTemplate->speedRotate = 0.05f;
 	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
+
+	glider.setHeight(gliderTemplate->minHeight);
 
 	_ai = new AiControll();
 	glider.setAi(_ai);
 
-	Object& object = _mapPtr->addObject("Box001");
-	object.setName("testbox");
+	Object& object = _mapPtr->addObject("aim_3d");
+	object.setName("aim");
 }
 
 void GameTerrain::initDraw()
@@ -130,15 +138,15 @@ void GameTerrain::initDraw()
 
 	Camera::current.setDefault();
 	Camera::current.setSpeed(1.0f);
-	Camera::current.setDist(20.0f);
-
-	//Camera::current.setVector(vec3(1.0f, 1.0f, -1.0f));
+	Camera::current.setFromEye(false);
+	Camera::current.setDist(5.0f);
+	Camera::current.setVector(vec3(1.0f, 0.0f, -1.0f));
 }
 
 void GameTerrain::initCallback()
 {
 	//addCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
-	addCallback(EventCallback::MOVE, Function(rotateCamera));
+	//addCallback(EventCallback::MOVE, Function(rotateCamera));
 
 	addCallback(EventCallback::TAP_PINCH, Function(shoot));
 	addCallback(EventCallback::BUTTON_UP, Function(pressButton));
@@ -310,19 +318,9 @@ public:
 	virtual void fB() {};
 };
 
-class ClassTest : public Object
+class ClassTest
 {
-	GliderTemplatePtr _template;
-	AIptr _ai;
-	GunPtr _gunPtr;
 
-	bool _live = true;
-	float _speedHeight;
-	float _speed = 0.0f;
-	vec3 _needVector;
-	bool _commands[GLIDER_COUNT_COMMAND];
-
-	virtual void f() {};
 };
 
 void GameTerrain::testFunction()

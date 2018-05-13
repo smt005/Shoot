@@ -16,10 +16,10 @@ public:
 
 	inline void setVector(const glm::vec3& vector)
 	{
-		_vector = vector;
-		_glider->setNeedVector(_vector);
+		_lookVector = vector;
+		_glider->setLookVector(_lookVector);
 	}
 
 private:
-	glm::vec3 _vector = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 _lookVector = glm::vec3(1.0f, 0.0f, 0.0f);
 };

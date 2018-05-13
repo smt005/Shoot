@@ -33,6 +33,7 @@ public:
 	void draw() override;
 
 	void initMap();
+	void initGlider();
 	void initDraw();
 	void initCallback();
 
