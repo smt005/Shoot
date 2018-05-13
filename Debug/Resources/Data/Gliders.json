@@ -1,0 +1,29 @@
+{
+  "marker": {
+    "model": "marker",
+    "maxHeight": 0.6,
+    "minHeight": 0.5,
+    "speedHeight": 0.0025,
+    "speed": 0.125,
+    "speedRotate": 0.05,
+    "maxSpeed": 0.25
+  },
+  "base": {
+    "model": "attacker",
+    "maxHeight": 0.6,
+    "minHeight": 0.5,
+    "speedHeight": 0.0025,
+    "speed": 0.125,
+    "speedRotate": 0.05,
+    "maxSpeed": 0.25
+  },
+  "player": {
+	"model": "base",
+    "maxHeight": 0.7,
+    "minHeight": 0.6,
+    "speedHeight": 0.0025,
+    "speed": 0.25,
+    "speedRotate": 0.05,
+    "maxSpeed": 0.25
+  }
+}

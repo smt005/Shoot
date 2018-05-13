@@ -1,0 +1,126 @@
+{
+  "Terrain_box_mono": {
+    "shape": "Models/Terrain_box_mono.obj",
+    "texture": "Textures/Greed/Greed_00.png",
+    "scale": 0.5
+  },
+  "Plane_with_box_100": {
+    "shape": "Models/Plane_with_box_100.obj",
+    "texture": "Textures/Greed/Ambient.png",
+    "scale": 2
+  },
+  "Terrain": {
+    "shape": "Models/Terrain.obj",
+    "texture": "Textures/Greed/Greed_00.png",
+    "scale": 2
+  },
+  "marker": {
+    "shape": "Models/Car.obj",
+    "texture": "Textures/Car.jpg"
+  },
+  "Plane100": {
+    "shape": "Models/Plane100.obj",
+    "texture": "Textures/Greed/Ambient.png"
+  },
+  "PlaneFood": {
+    "shape": "Models/Plane100.obj",
+    "texture": "Textures/Food_128.png"
+  },
+  "Box1": {
+    "shape": "Models/Box1.obj",
+    "texture": "Textures/Box.jpg"
+  },
+  "Box001": {
+    "shape": "Models/Box1.obj",
+    "texture": "Textures/Box.jpg",
+    "scale": 0.01
+  },
+  "Cell_test": {
+    "shape": "Models/Cell_test.obj",
+    "scale": 0.1,
+    "texture": "Textures/Cell_blue_test.png"
+  },
+  "Sphere_005": {
+    "shape": "Models/Sphere_01.obj",
+    "texture": "Textures/Box.jpg",
+    "scale": 0.5
+  },
+  "Cylinder": {
+    "shape": "Models/Cylinder01_10.obj",
+    "texture": "Textures/Box.jpg",
+    "scale": 0.25
+  },
+  "Cylinder_025": {
+    "shape": "Models/Cylinder01_10.obj",
+    "texture": "Textures/Food_128.png",
+    "scale": 0.25
+  },
+  "Chain_degree_00": {
+    "shape": "Models/Chain_degree_00.obj",
+    "texture": "Textures/Simple_Metal.jpg"
+  },
+  "Chain_degree_90": {
+    "shape": "Models/Chain_degree_90.obj",
+    "texture": "Textures/Simple_Metal.jpg"
+  },
+  "Dumbbell_05": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Simple_Metal.jpg",
+    "scale": 0.5
+  },
+  "Dumbbell_025": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Simple_Metal.jpg",
+    "scale": 0.25
+  },
+  "Dumbbell_0125": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Simple_Metal.jpg",
+    "scale": 0.125
+  },
+  "MapArena": {
+    "shape": "Models/MapArena.obj",
+    "texture": "Textures/nochnoy_2.jpg"
+  },
+  "MapField": {
+    "shape": "Models/MapField.obj",
+    "texture": "Textures/nochnoy_2.jpg"
+  },
+  "base": {
+    "shape": "Models/Gliders/base.obj",
+    "scale": 5,
+    "texture": "Textures/Simple_Metal.jpg"
+  },
+  "attacker": {
+    "shape": "Models/Gliders/attacker.obj",
+    "scale": 5,
+    "texture": "Textures/Simple_Metal.jpg"
+  },
+  "GliderBox": {
+    "texture": "Textures/Simple_Metal.jpg",
+    "shape": "Models/Box1.obj",
+    "scale": 3
+  },
+  "BoxShell": {
+    "shape": "Models/Shell/Shell_physic.obj",
+    "texture": "Textures/circle_soft_orange.png",
+    "scale": 0.1
+  },
+  "Triangle": {
+    "shape": "Models/Triangle.obj",
+    "texture": "Textures/Box.jpg",
+    "scale": 10
+  },
+  "aim_plane_red": {
+    "shape": "Models/Aim/aim_plane.obj",
+    "texture": "Textures/Aim/aim_red.png"
+  },
+  "aim_3d": {
+    "shape": "Models/Aim/aim_3d.obj",
+    "texture": "Textures/Colors/red.png"
+  },
+  "aim_3d_physic": {
+    "shape": "Models/Aim/aim_3d_physic.obj",
+    "texture": "Textures/Colors/red.png"
+  }
+}

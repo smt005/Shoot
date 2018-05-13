@@ -1,0 +1,286 @@
+{
+  "area": 100,
+  "objects": [
+    {
+      "name": "MapArena",
+	  "model": "aim_3d_physic",
+      "physicType": "terrain",
+      "pos": [
+        -25,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "MapField",
+      "model": "MapField",
+      "pos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Chain_00",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        0,
+        0,
+        50
+      ]
+    },
+    {
+      "name": "Chain_01",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        0,
+        0,
+        55
+      ]
+    },
+    {
+      "name": "Chain_02",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        1,
+        0,
+        60
+      ]
+    },
+    {
+      "name": "Chain_03",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        1,
+        0,
+        65
+      ]
+    },
+    {
+      "name": "Chain_04",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        2,
+        0,
+        70
+      ]
+    },
+    {
+      "name": "Chain_05",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        2,
+        0,
+        75
+      ]
+    },
+    {
+      "name": "Chain_06",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        3,
+        0,
+        80
+      ]
+    },
+    {
+      "name": "Chain_07",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        3,
+        0,
+        85
+      ]
+    },
+    {
+      "name": "Chain_08",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        4,
+        0,
+        90
+      ]
+    },
+    {
+      "name": "Chain_09",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        4,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "Chain_10",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        5,
+        0,
+        100
+      ]
+    },
+    {
+      "name": "Chain_11",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        5,
+        0,
+        105
+      ]
+    },
+    {
+      "name": "Chain_12",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        6,
+        0,
+        110
+      ]
+    },
+    {
+      "name": "Chain_13",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        6,
+        0,
+        115
+      ]
+    },
+    {
+      "name": "Chain_14",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        7,
+        0,
+        120
+      ]
+    },
+    {
+      "name": "Chain_15",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        7,
+        0,
+        125
+      ]
+    },
+    {
+      "name": "Chain_16",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        8,
+        0,
+        130
+      ]
+    },
+    {
+      "name": "Chain_17",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        8,
+        0,
+        135
+      ]
+    },
+    {
+      "name": "Chain_18",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        9,
+        0,
+        140
+      ]
+    },
+    {
+      "name": "Chain_19",
+      "model": "Chain_degree_90",
+      "physicType": "convex",
+      "pos": [
+        9,
+        0,
+        145
+      ]
+    },
+    {
+      "name": "Chain_20",
+      "model": "Chain_degree_00",
+      "physicType": "convex",
+      "pos": [
+        10,
+        0,
+        150
+      ]
+    },
+    {
+      "name": "Dumbbell_00",
+      "model": "Dumbbell_025",
+      "physicType": "convex",
+      "pos": [
+        10,
+        -15,
+        50
+      ]
+    },
+    {
+      "name": "Dumbbell_01",
+      "model": "Dumbbell_025",
+      "physicType": "convex",
+      "pos": [
+        10,
+        -15,
+        60
+      ]
+    },
+    {
+      "name": "Dumbbell_02",
+      "model": "Dumbbell_025",
+      "physicType": "convex",
+      "pos": [
+        10,
+        -15,
+        70
+      ]
+    },
+    {
+      "name": "Dumbbell_03",
+      "model": "Dumbbell_025",
+      "physicType": "convex",
+      "pos": [
+        10,
+        -15,
+        80
+      ]
+    }
+  ],
+  "gliders": [
+    {
+      "name": "Glider_player",
+      "model": "Glider",
+      "type": 2,
+      "pos": [
+        0,
+        0,
+        4
+      ]
+    }
+  ]
+}

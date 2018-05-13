@@ -11,9 +11,12 @@
 *.lib
 *.dll
 *.exe
-Shoot/Debug/
+*log
+*tlog
+*.lastbuildstate
+*.idb
 App/Debug/
 Engine/Debug/
 Game/Debug/
 ThirdParty/
-Resources/
+main.obj
