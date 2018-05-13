@@ -89,8 +89,7 @@ bool Map::create(const string &newName)
 			++index;
 		}
 
-		Glider &object = help::add(_gliders);
-		object.set(name, modelName, physicType, pos);
+		Glider &glider = help::add(_gliders, new Glider("base", pos, name));
 	}
 
 	return true;

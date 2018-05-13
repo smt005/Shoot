@@ -3,17 +3,18 @@
 #include "Shell.h"
 #include "../Common/Log.h"
 
-Glider Glider::_defaultGlider;
+Glider* Glider::_defaultGlider = nullptr;
 
 Glider::Glider()
 {
-	//_template = make_shared<GliderTemplate>();
 	setTemplate("base");
 }
 
-Glider::Glider(const string& nameTemplate)
+Glider::Glider(const string& nameTemplate, const vec3& pos, const string& name)
 {
 	setTemplate(nameTemplate);
+	setName(name);
+	setPos(pos);
 }
 
 Glider::~Glider()
@@ -22,9 +23,18 @@ Glider::~Glider()
 
 void Glider::setTemplate(const string& nameTemplate)
 {
-	_template = GliderTemplate::getByName(nameTemplate);
+	GliderTemplatePtr gliderTemplate = GliderTemplate::getByName(nameTemplate);
+	setTemplate(gliderTemplate);
+}
 
-	setHeight(_template->minHeight);
+void Glider::setTemplate(GliderTemplatePtr gliderTemplate)
+{
+	if (!gliderTemplate)
+		return;
+
+	_template = gliderTemplate;
+
+	_model = Model::getByName(_template->model);
 
 	Gun* gun = new Gun(getId());
 	_gunPtr = GunPtr(gun);
@@ -36,16 +46,11 @@ void Glider::resetCommand()
 		item = false;
 }
 
-void Glider::setTemplate(GliderTemplatePtr gliderTemplate)
-{
-	_template = gliderTemplate;
-}
-
 void Glider::setAi(AIInterface* ai)
 {
 	if (!ai)
 		return;
-
+	
 	ai->setGlider(this);
 	_ai = AIptr(ai);
 }

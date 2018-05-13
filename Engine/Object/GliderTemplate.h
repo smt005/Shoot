@@ -23,6 +23,8 @@ public:
 
 private:
 public:
+	string model;
+
 	float maxHeight = 4.0f;
 	float minHeight = 3.0f;
 	float speedHeight = 0.01f;

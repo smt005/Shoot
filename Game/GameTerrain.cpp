@@ -112,16 +112,8 @@ void GameTerrain::initMap()
 void GameTerrain::initGlider()
 {
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");
-
-	GliderTemplate* gliderTemplate = new GliderTemplate();
-	gliderTemplate->maxHeight = 0.7f;
-	gliderTemplate->minHeight = 0.6f;
-	gliderTemplate->speedHeight = 0.0025f;
-	gliderTemplate->speed = 0.25f;
-	gliderTemplate->speedRotate = 0.05f;
-	glider.setTemplate(GliderTemplatePtr(gliderTemplate));
-
-	glider.setHeight(gliderTemplate->minHeight);
+	glider.setTemplate(GliderTemplate::getByName("player"));
+	glider.setPos(vec3(0.0f, 0.0f, 3.0f));
 
 	_ai = new AiControll();
 	glider.setAi(_ai);

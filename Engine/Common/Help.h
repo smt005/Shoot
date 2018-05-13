@@ -13,9 +13,9 @@ float random_f(const float& min  = 0.0f, const float& max = 1.0f, const int& acc
 int random_i(const int& min = 0, const int& max = 1);
 
 template <class ObjectT>
-ObjectT& add(vector<ObjectT*>& vector)
+ObjectT& add(vector<ObjectT*>& vector, ObjectT* item = nullptr)
 {
-	ObjectT* newItem = new ObjectT();
+	ObjectT* newItem = item ? item : new ObjectT();
 	vector.push_back(newItem);
 	return *newItem;
 }

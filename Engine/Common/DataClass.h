@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Log.h"
+
 #include <string>
 #include <map>
 #include <memory>
@@ -25,7 +27,6 @@ public:
 
 private:
 	static map<string, ObjectPtrT>* _map;
-	//static ObjectT* _default;
 
 public:
 	static ObjectPtrT addPtr(const string& name, ObjectT* newItem);
@@ -76,10 +77,12 @@ template <class ObjectT>
 ObjectPtrT DataClass<ObjectT>::getByName(const string& name)
 {
 	auto& map = getMap();
-	
+
 	auto it = map.find(name);
 	if (it != map.end())
+	{
 		return it->second;
+	}
 
 	ObjectT* newItem = new ObjectT();
 

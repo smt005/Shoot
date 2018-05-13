@@ -85,8 +85,11 @@ void Object::set(const string &name, const string &modelName, PhysicType physicT
 	_model = Model::getByName(modelName);
 	_physicType = physicType;
 
-	if (length(pos) > 0.0f) _matrix = translate(_matrix, pos);
-	if (!data.empty()) setData(data);
+	if (length(pos) > 0.0f)
+		_matrix = translate(_matrix, pos);
+
+	if (!data.empty())
+		setData(data);
 }
 
 void Object::setHeight(const float &height)

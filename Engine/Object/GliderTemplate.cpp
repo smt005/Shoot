@@ -8,11 +8,12 @@ bool GliderTemplate::create(const string &name)
 {
 	setName(name);
 
-	json dataModel = data(name);
-	if (dataModel.empty())
+	json temp = data(name);
+	if (temp.empty())
 		return false;
 
 	/*"base": {
+		"model": "Glider",
 		"maxHeight": 0.7,
 		"minHeight": 0.6,
 		"speedHeight": 0.0025,
@@ -21,12 +22,15 @@ bool GliderTemplate::create(const string &name)
 		"maxSpeed": 0.25
 	}*/
 
-	maxHeight =		dataModel["maxHeight"].is_number_float()	? dataModel["maxHeight"].get<float>()	: 0.7f;
-	minHeight =		dataModel["minHeight"].is_number_float()	? dataModel["minHeight"].get<float>()	: 0.76;
-	speedHeight =	dataModel["speedHeight"].is_number_float()	? dataModel["speedHeight"].get<float>()	: 0.0025f;
-	speed =			dataModel["speed"].is_number_float()		? dataModel["speed"].get<float>()		: 0.25f;
-	speedRotate =	dataModel["speedRotate"].is_number_float()	? dataModel["speedRotate"].get<float>()	: 0.05f;
-	maxSpeed =		dataModel["maxSpeed"].is_number_float()		? dataModel["maxSpeed"].get<float>()	: 0.25f;
+	const string& model_ = temp["model"].is_string() ? temp["model"] : "base";
+	model = model_;
+
+	maxHeight =		temp["maxHeight"].is_number_float()		? temp["maxHeight"].get<float>()	: 0.7f;
+	minHeight =		temp["minHeight"].is_number_float()		? temp["minHeight"].get<float>()	: 0.76;
+	speedHeight =	temp["speedHeight"].is_number_float()	? temp["speedHeight"].get<float>()	: 0.0025f;
+	speed =			temp["speed"].is_number_float()			? temp["speed"].get<float>()		: 0.25f;
+	speedRotate =	temp["speedRotate"].is_number_float()	? temp["speedRotate"].get<float>()	: 0.05f;
+	maxSpeed =		temp["maxSpeed"].is_number_float()		? temp["maxSpeed"].get<float>()		: 0.25f;
 
 	return true;
 }
@@ -40,7 +44,10 @@ json GliderTemplate::data(const string &name)
 	if (_data.empty())
 	{
 		char *dataString = File::loadText(FILE_NAME_GLIDER_TEMPLATE_DATA);
-		if (!dataString) return json::basic_json();
+		if (!dataString)
+		{
+			return json::basic_json();
+		}
 
 		_data = json::parse(dataString);
 	}

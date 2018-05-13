@@ -22,11 +22,11 @@ class AIInterface
 	friend Glider;
 
 public:
-	virtual ~AIInterface() { }
-	virtual void action() { }
+	virtual ~AIInterface()	{ }
+	virtual void action()	{ }
 
-	inline void setGlider(Glider* glider) { _glider = glider; }
-	inline Glider* getGlider() { return _glider; }
+	inline void setGlider(Glider* glider)	{ _glider = glider; }
+	inline Glider* getGlider()				{ return _glider; }
 
 protected:
 	Glider* _glider;
@@ -62,21 +62,21 @@ private:
 
 public:
 	Glider();
-	Glider(const string& nameTemplate);
+	Glider(const string& nameTemplate, const glm::vec3& pos = vec3(0.0f), const string& name = string());
 	virtual ~Glider();
+
 	void setTemplate(const string& nameTemplate);
-
-	inline void setLookVector(const vec3& lookVector) { _lookVector = lookVector; }
-	inline void setMoveVector(const vec3& moveVector) { _moveVector = moveVector; }
-	inline bool* getCommands() { return _commands; }
-	void resetCommand();
-
-	inline int getId() { return reinterpret_cast<int>(this); }
-	inline bool getLive() { return _live; }
-	inline void setLive(const bool live) { _live = live; }
-
 	void setTemplate(GliderTemplatePtr gliderTemplate);
 	void setAi(AIInterface* ai);
+
+	inline void setLookVector(const vec3& lookVector)	{ _lookVector = lookVector; }
+	inline void setMoveVector(const vec3& moveVector)	{ _moveVector = moveVector; }
+	inline bool* getCommands()							{ return _commands; }
+	void resetCommand();
+
+	inline int getId()						{ return reinterpret_cast<int>(this); }
+	inline bool getLive()					{ return _live; }
+	inline void setLive(const bool live)	{ _live = live; }
 
 	void action();
 	void rotate();
@@ -85,8 +85,14 @@ public:
 	void shoot();
 
 public:
-	static Glider& defaultItem() { return _defaultGlider; }
+	inline static Glider& defaultItem()
+	{
+		if (!_defaultGlider)
+			_defaultGlider = new Glider();
+
+		return *_defaultGlider;
+	}
 
 private:
-	static Glider _defaultGlider;
+	static Glider* _defaultGlider;
 };
