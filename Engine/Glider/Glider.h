@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Object.h"
+#include "../Object/Object.h"
 #include "GliderTemplate.h"
 #include "Gun.h"
 #include "../Common/IncludesMatem.h"
@@ -76,7 +76,7 @@ public:
 
 	inline int getId()						{ return reinterpret_cast<int>(this); }
 	inline bool getLive()					{ return _live; }
-	inline void setLive(const bool live)	{ _live = live; }
+	void setLive(const bool live);
 
 	void action();
 	void rotate();

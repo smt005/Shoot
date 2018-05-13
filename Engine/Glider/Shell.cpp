@@ -1,7 +1,7 @@
 #include "Shell.h"
-#include "Model.h"
+#include "../Object/Model.h"
 #include "Glider.h"
-#include "Map.h"
+#include "../Object/Map.h"
 #include "../App/App.h"
 
 using namespace glm;

@@ -1,6 +1,3 @@
-#if defined BUILD_WIN_GLES || defined BUILD_WIN_GLFW
-    precision mediump float;
-#endif
 
 void main()
 {

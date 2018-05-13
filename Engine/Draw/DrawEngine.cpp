@@ -5,11 +5,12 @@
 #include "Camera.h"
 #include "../Object/Map.h"
 #include "../Object/Object.h"
-#include "../Object/Glider.h"
 #include "../Object/Model.h"
 #include "../Object/Shape.h"
-#include "../Object/Shell.h"
-
+#include "../Glider/Glider.h"
+#include "../Glider/Shell.h"
+#include "../Effect/EffectObject.h"
+#include "../Common/Log.h"
 #include <GL/glew.h>
 
 float DrawEngine::_backgroundColor[] = {0.3f, 0.6f, 0.9f, 1.0f};
@@ -139,16 +140,19 @@ void DrawEngine::drawMap(Map& map)
     GLuint u_ambientColor = glGetUniformLocation(_programBase, "u_ambientColor");
     glUniform4fv(u_ambientColor, 1, _ambientColor);
 
+	for (auto glider : map._gliders)
+	{
+		drawObject(*glider);
+	}
+
 	for (auto object : map._objects)
 	{
 		drawObject(*object);
 	}
 
-	vector<Glider*>& gliders = map._gliders;
-
-	for (auto glider : gliders)
+	for (auto effect : map._effects)
 	{
-		drawObject(*glider);
+		drawObject(*effect, effect->_scale, effect->_alpha);
 	}
 
 	for (auto shell : Shell::getShells())
@@ -211,12 +215,22 @@ void DrawEngine::drawMapPhysic(Map& map)
 	}
 }
 
-void DrawEngine::drawObject(Object& object)
+void DrawEngine::drawObject(Object& object, const float scale, const float alpha)
 {
-	drawModel(object.getModel(), object.matrixFloat());
+	if (scale == 1.0f)
+	{
+		drawModel(object.getModel(), object.matrixFloat(), alpha);
+	}
+	else
+	{
+		mat4x4 mat = glm::scale(object.getMatrix(), vec3(scale));
+		drawModel(object.getModel(), glm::value_ptr(mat), alpha);
+
+		LOGI("LOG: Draw alpha: %f\n", alpha);
+	}
 }
 
-void DrawEngine::drawModel(Model& model, const float* matrix)
+void DrawEngine::drawModel(Model& model, const float* matrix, const float alpha)
 {
 	unsigned int textureId = model.textureId();
 	Mesh& mesh = model.getMesh();
@@ -244,6 +258,9 @@ void DrawEngine::drawModel(Model& model, const float* matrix)
 
 		_cuttrentBufer = mesh._buffer[3];
 	}
+
+	GLuint u_alpha = glGetUniformLocation(_programBase, "u_alpha");
+	glUniform1f(u_alpha, alpha);
 
 	if (textureId != _cuttrentTexture)
 	{

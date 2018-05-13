@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "Object.h"
-#include "Model.h"
+#include "../Object/Object.h"
+#include "../Object/Model.h"
 #include "../Common/IncludesMatem.h"
 
 #include <deque>

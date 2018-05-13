@@ -15,7 +15,7 @@
     "scale": 2
   },
   "marker": {
-    "shape": "Models/Car.obj",
+    "shape": "Models/Gliders/Car.obj",
     "texture": "Textures/Car.jpg"
   },
   "Plane100": {
@@ -122,5 +122,11 @@
   "aim_3d_physic": {
     "shape": "Models/Aim/aim_3d_physic.obj",
     "texture": "Textures/Colors/red.png"
+  },
+  "explodeSphere": {
+    "shape": "Models/Explodes/explodeSphere.obj",
+    "texture": "Textures/Explodes/explodesOrange.png",
+	"scale": 0.5
   }
+  
 }

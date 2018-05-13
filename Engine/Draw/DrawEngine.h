@@ -44,8 +44,8 @@ public:
 	static void drawMap(Map& map);
 	static void drawMapPhysic(Map& map);
 
-	static void drawObject(Object& object);
-	static void drawModel(Model& model, const float* matrix);
+	static void drawObject(Object& object, const float scale = 1.0f, const float alpha = 1.0f);
+	static void drawModel(Model& model, const float* matrix, const float alpha = 1.0f);
 	static void drawMesh(Mesh& mesh, Texture* texture);
 
 	// DrawLines

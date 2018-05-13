@@ -7,12 +7,13 @@
 #include "../Engine/Draw/DrawEngine.h"
 #include "../Engine/Draw/Camera.h"
 #include "../Engine/Object/Map.h"
-#include "../Engine/Object/Glider.h"
-#include "../Engine/Object/GliderTemplate.h"
 #include "../Engine/Object/Object.h"
 #include "../Engine/Object/Model.h"
 #include "../Engine/Object/Shape.h"
-#include "../Engine/Object/Gun.h"
+#include "../Engine/Glider/Glider.h"
+#include "../Engine/Glider/GliderTemplate.h"
+#include "../Engine/Glider/Gun.h"
+#include "../Engine/Effect/EffectObject.h"
 #include "../Engine/Common/Help.h"
 #include "../Engine/Common/IncludesMatem.h"
 
@@ -103,6 +104,7 @@ void GameTerrain::draw()
 void GameTerrain::initMap()
 {
 	_mapPtr = Map::getByName("MapGameTerrain");
+	Map::setCurrent(_mapPtr);
 	_mapPtr->setPhysic();
 	Physics::setGravity(vec3(0.0f, 0.0f, 0.0f));
 
@@ -192,7 +194,8 @@ bool GameTerrain::pressButton(void *data)
 	if (Callback::charButtonUp == 'T')
 	{
 		Glider& glider = _mapPtr->getGliderByName("Glider_player");
-		glider.setTemplate("player");
+		vec3 pos = glider.getPos();
+		EffectObject& effect = _mapPtr->addEffect("explodeSphere", pos);
 	}
 
 	return false;

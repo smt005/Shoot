@@ -1,9 +1,10 @@
 
 #include "Map.h"
 #include "Object.h"
-#include "Glider.h"
 #include "Model.h"
-#include "Shell.h"
+#include "../Glider/Glider.h"
+#include "../Glider/Shell.h"
+#include "../Effect/EffectObject.h"
 #include "../Physics/Physics.h"
 #include "../../App/File.h"
 #include "../Common/Help.h"
@@ -12,6 +13,7 @@ Map::~Map()
 {
 	help::clear(_objects);
 	help::clear(_gliders);
+	help::clear(_effects);
 }
 
 bool Map::create(const string &newName)
@@ -22,9 +24,7 @@ bool Map::create(const string &newName)
 	char* dataChar = File::loadText(fileName);
 
 	if (!dataChar)
-	{
 		return false;
-	}
 
 	json data = json::parse(dataChar);
 	delete[] dataChar;
@@ -133,8 +133,57 @@ void Map::getDataJson(json& dataJson)
 
 void Map::action()
 {
+	// Effect
+	{
+		size_t countDeleteEffect = 0;
+		std::remove_if(_effects.begin(), _effects.end(), [&countDeleteEffect](EffectObject* item)
+		{
+			if (item->_live)
+			{
+				return false;
+			}
+			else
+			{
+				++countDeleteEffect;
+				return true;
+			}
+		});
+
+		if (countDeleteEffect > 0)
+		{
+			size_t size = _effects.size();
+			size -= countDeleteEffect;
+			_effects.resize(size);
+		}
+	}
+
+	// Grider
+	{
+		size_t countDelete = 0;
+		std::remove_if(_gliders.begin(), _gliders.end(), [&countDelete](Glider* item)
+		{
+			if (item->getLive())
+			{
+				return false;
+			}
+			else
+			{
+				++countDelete;
+				return true;
+			}
+		});
+
+		if (countDelete > 0)
+		{
+			size_t size = _gliders.size();
+			size -= countDelete;
+			_gliders.resize(size);
+		}
+	}
+
 	for (auto object : _objects) object->action();
 	for (auto glider : _gliders) glider->action();
+	for (auto effect : _effects) effect->action();
 
 	Shell::update();
 	Physics::update();
@@ -162,7 +211,32 @@ Object& Map::addObject(const string& nameModel, const PhysicType& type, const gl
 	return object;
 }
 
+EffectObject& Map::addEffect(const string& nameModel, const glm::vec3& pos)
+{
+	EffectObject& effect = help::add(_effects);
+	effect.set("", nameModel, PhysicType::NONE, pos);
+	return effect;
+}
+
 Glider& Map::getGliderByName(const string& name)
 {
 	return help::find(_gliders, name);
+}
+
+
+// ststic 
+
+MapPtr Map::_current;
+
+void Map::setCurrent(MapPtr map)
+{
+	_current = map;
+}
+
+MapPtr Map::current()
+{
+	if (!_current)
+		_current = MapPtr(new Map());
+
+	return _current;
 }

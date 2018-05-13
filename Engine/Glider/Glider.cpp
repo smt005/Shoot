@@ -3,6 +3,9 @@
 #include "Shell.h"
 #include "../Common/Log.h"
 
+// TODO: удалить
+#include "../Object/Map.h"
+
 Glider* Glider::_defaultGlider = nullptr;
 
 Glider::Glider()
@@ -53,6 +56,24 @@ void Glider::setAi(AIInterface* ai)
 	
 	ai->setGlider(this);
 	_ai = AIptr(ai);
+}
+
+void Glider::setLive(const bool live)
+{
+	if (!_live)
+		return;
+
+	_live = live;
+
+	vec3 pos = getPos();
+
+	if (!Map::current())
+	{
+		LOG("LOG");
+		return;
+	}
+
+	Map::current()->addEffect("explodeSphere", pos);
 }
 
 void Glider::action()

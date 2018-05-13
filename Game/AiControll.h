@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Engine/Object/Glider.h"
+#include "../Engine/Glider/Glider.h"
 #include "../Engine/Common/IncludesMatem.h"
 
 class AiControll : public AIInterface
