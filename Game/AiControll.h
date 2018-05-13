@@ -17,6 +17,8 @@ public:
 	inline void setVector(const glm::vec3& vector)
 	{
 		_lookVector = vector;
+		_lookVector.z = 0.0f;
+		glm::normalize(_lookVector);
 		_glider->setLookVector(_lookVector);
 	}
 

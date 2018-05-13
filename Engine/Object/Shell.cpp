@@ -54,7 +54,7 @@ void Shell::add(const glm::vec3& pos, const glm::vec3& vector, const int gliderI
 	_shells.emplace_back(shell);
 }
 
-void Shell::onFrame()
+void Shell::update()
 {
 	double currentTime = App::getCurentTime();
 

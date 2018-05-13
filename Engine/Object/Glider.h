@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Object.h"
+#include "GliderTemplate.h"
 #include "Gun.h"
 #include "../Common/IncludesMatem.h"
 
@@ -16,9 +17,6 @@ typedef weak_ptr<Glider> GliderWptr;
 class AIInterface;
 typedef shared_ptr<AIInterface> AIptr;
 
-struct GliderTemplate;
-typedef shared_ptr<GliderTemplate> GliderTemplatePtr;
-
 class AIInterface
 {
 	friend Glider;
@@ -32,21 +30,6 @@ public:
 
 protected:
 	Glider* _glider;
-};
-
-//---
-
-struct GliderTemplate
-{
-	const static GliderTemplate _template;
-
-	float maxHeight = 4.0f;
-	float minHeight = 3.0f;
-	float speedHeight = 0.01f;
-	float speed = 0.05f;
-	float speedRotate = 0.1f;
-
-	float maxSpeed = 0.1f;
 };
 
 //---
@@ -79,7 +62,9 @@ private:
 
 public:
 	Glider();
+	Glider(const string& nameTemplate);
 	virtual ~Glider();
+	void setTemplate(const string& nameTemplate);
 
 	inline void setLookVector(const vec3& lookVector) { _lookVector = lookVector; }
 	inline void setMoveVector(const vec3& moveVector) { _moveVector = moveVector; }

@@ -7,16 +7,27 @@ Glider Glider::_defaultGlider;
 
 Glider::Glider()
 {
-	_template = make_shared<GliderTemplate>();
+	//_template = make_shared<GliderTemplate>();
+	setTemplate("base");
+}
 
-	setHeight(_template->_minHeight);
-
-	Gun* gun = new Gun(getId());
-	_gunPtr = GunPtr(gun);
+Glider::Glider(const string& nameTemplate)
+{
+	setTemplate(nameTemplate);
 }
 
 Glider::~Glider()
 {
+}
+
+void Glider::setTemplate(const string& nameTemplate)
+{
+	_template = GliderTemplate::getByName(nameTemplate);
+
+	setHeight(_template->minHeight);
+
+	Gun* gun = new Gun(getId());
+	_gunPtr = GunPtr(gun);
 }
 
 void Glider::resetCommand()

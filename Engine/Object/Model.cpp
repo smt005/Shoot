@@ -2,7 +2,7 @@
 #include "../../App/File.h"
 #include "../Common/Log.h"
 
-#define FILE_NAME_MODEL_DATA	"Models/Models.json"
+#define FILE_NAME_MODEL_DATA	"Data/Models.json"
 #define FILE_NAME_SHAPE_FILE	"Models/Box1.obj"
 #define FILE_NAME_TEXTURE_FILE	"Textures/BlackWhite.png"
 

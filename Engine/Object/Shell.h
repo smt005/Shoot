@@ -24,7 +24,7 @@ private:
 
 public:
 	static void add(const glm::vec3& pos, const glm::vec3& vector, const int gliderId, ModelPtr& model);
-	static void onFrame();
+	static void update();
 	
 	static inline deque<Shell*>& getShells() { return _shells; }
 	

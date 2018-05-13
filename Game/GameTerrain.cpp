@@ -8,6 +8,7 @@
 #include "../Engine/Draw/Camera.h"
 #include "../Engine/Object/Map.h"
 #include "../Engine/Object/Glider.h"
+#include "../Engine/Object/GliderTemplate.h"
 #include "../Engine/Object/Object.h"
 #include "../Engine/Object/Model.h"
 #include "../Engine/Object/Shape.h"
@@ -113,8 +114,8 @@ void GameTerrain::initGlider()
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");
 
 	GliderTemplate* gliderTemplate = new GliderTemplate();
-	gliderTemplate->maxHeight = 3.1f;
-	gliderTemplate->minHeight = 3.0f;
+	gliderTemplate->maxHeight = 0.7f;
+	gliderTemplate->minHeight = 0.6f;
 	gliderTemplate->speedHeight = 0.0025f;
 	gliderTemplate->speed = 0.25f;
 	gliderTemplate->speedRotate = 0.05f;
@@ -196,6 +197,12 @@ bool GameTerrain::pressButton(void *data)
         _visibleVectorLight = !_visibleVectorLight;
     }
     
+	if (Callback::charButtonUp == 'T')
+	{
+		Glider& glider = _mapPtr->getGliderByName("Glider_player");
+		glider.setTemplate("player");
+	}
+
 	return false;
 }
 

@@ -137,7 +137,7 @@ void Map::action()
 	for (auto object : _objects) object->action();
 	for (auto glider : _gliders) glider->action();
 
-	Shell::onFrame();
+	Shell::update();
 	Physics::update();
 }
 
