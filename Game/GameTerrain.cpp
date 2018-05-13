@@ -1,5 +1,6 @@
 #include "GameTerrain.h"
 #include "AiControll.h"
+#include "AiTarget.h"
 
 #include "../App/App.h"
 #include "../App/File.h"
@@ -113,8 +114,26 @@ void GameTerrain::initMap()
 
 void GameTerrain::initGlider()
 {
+	// Enemy
+
+	vector<Glider*>& gliders = _mapPtr->getGliders();
+	for_each(gliders.begin(), gliders.end(), [](Glider* glider)
+	{
+		if (!glider)
+			return;
+
+		if (glider->name() != "Glider_player")
+		{
+			AiTarget* ai = new AiTarget();
+			glider->setAi(ai);
+		}
+	}
+	);
+
+	//Player
+
 	Glider& glider = _mapPtr->getGliderByName("Glider_player");
-	glider.setTemplate(GliderTemplate::getByName("player"));
+	glider.setTemplate(GliderTemplate::getByName("attacker"));
 	glider.setPos(vec3(0.0f, 0.0f, 3.0f));
 
 	_ai = new AiControll();
@@ -166,9 +185,6 @@ bool GameTerrain::shoot(void *data)
 bool GameTerrain::rotateCamera(void *data)
 {
 	Camera::current.rotate(Callback::vector);
-
-	//_ai->setVector(Camera::current.vector());
-
 	return true;
 }
 
@@ -193,9 +209,18 @@ bool GameTerrain::pressButton(void *data)
     
 	if (Callback::charButtonUp == 'T')
 	{
-		Glider& glider = _mapPtr->getGliderByName("Glider_player");
-		vec3 pos = glider.getPos();
-		EffectObject& effect = _mapPtr->addEffect("explodeSphere", pos);
+		int countGenerateGlider = 5;
+		for (int i = 0; i < countGenerateGlider; ++i)
+		{
+			AiTarget* ai = new AiTarget();
+			vec3 pos(
+				help::random_f(-5.0f, 5.0f),
+				help::random_f(-5.0f, 5.0f),
+				1.0f
+			);
+
+			_mapPtr->addGlider("attacker", ai, pos);
+		}
 	}
 
 	return false;
@@ -246,22 +271,22 @@ void GameTerrain::controlGlider()
 
 	if (Callback::key['W'])
 	{
-		_ai->setCommand(GliderCommand::FOWARD);
+		_ai->setCommand(GliderCommand::FOWARD_VIEW);
 	}
 
 	if (Callback::key['S'])
 	{
-		_ai->setCommand(GliderCommand::BACK);
+		_ai->setCommand(GliderCommand::BACK_VIEW);
 	}
 
 	if (Callback::key['A'])
 	{
-		_ai->setCommand(GliderCommand::LEFT);
+		_ai->setCommand(GliderCommand::LEFT_VIEW);
 	}
 
 	if (Callback::key['D'])
 	{
-		_ai->setCommand(GliderCommand::RIGHT);
+		_ai->setCommand(GliderCommand::RIGHT_VIEW);
 	}
 
 	if (Callback::key['R'])

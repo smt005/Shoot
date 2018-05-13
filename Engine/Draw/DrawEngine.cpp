@@ -225,8 +225,6 @@ void DrawEngine::drawObject(Object& object, const float scale, const float alpha
 	{
 		mat4x4 mat = glm::scale(object.getMatrix(), vec3(scale));
 		drawModel(object.getModel(), glm::value_ptr(mat), alpha);
-
-		LOGI("LOG: Draw alpha: %f\n", alpha);
 	}
 }
 

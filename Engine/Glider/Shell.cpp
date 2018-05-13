@@ -37,7 +37,7 @@ bool Shell::hasHint()
 		vec3 vector = glider->getPos() - pos;
 		float dist = glm::length(vector);
 
-		if (dist < 5.0f)
+		if (dist < 1.0f)
 		{
 			_time = 0;
 			glider->setLive(false);

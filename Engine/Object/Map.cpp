@@ -65,7 +65,7 @@ bool Map::create(const string &newName)
 	for (auto element : data["gliders"])
 	{
 		const string &name = element["name"].is_string() ? element["name"] : "";
-		const string &modelName = element["model"].is_string() ? element["model"] : "default";
+		const string &templateName = element["template"].is_string() ? element["template"] : "base";
 		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
 
 		PhysicType physicType = PhysicType::NONE;
@@ -89,7 +89,7 @@ bool Map::create(const string &newName)
 			++index;
 		}
 
-		Glider &glider = help::add(_gliders, new Glider("base", pos, name));
+		Glider &glider = help::add(_gliders, new Glider(templateName, pos, name));
 	}
 
 	return true;
@@ -218,6 +218,16 @@ EffectObject& Map::addEffect(const string& nameModel, const glm::vec3& pos)
 	return effect;
 }
 
+Glider& Map::addGlider(const string& nameTemplate, AIInterface* ai, const glm::vec3& pos, const string& name)
+{
+	Glider &glider = help::add(_gliders, new Glider(nameTemplate, pos, name));
+
+	if (ai)
+		glider.setAi(ai);
+
+	return glider;
+}
+
 Glider& Map::getGliderByName(const string& name)
 {
 	return help::find(_gliders, name);
@@ -233,10 +243,3 @@ void Map::setCurrent(MapPtr map)
 	_current = map;
 }
 
-MapPtr Map::current()
-{
-	if (!_current)
-		_current = MapPtr(new Map());
-
-	return _current;
-}

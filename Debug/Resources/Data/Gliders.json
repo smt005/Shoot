@@ -4,11 +4,11 @@
     "maxHeight": 0.6,
     "minHeight": 0.5,
     "speedHeight": 0.0025,
-    "speed": 0.125,
+    "speed": 0.1,
     "speedRotate": 0.05,
     "maxSpeed": 0.25
   },
-  "base": {
+  "attacker": {
     "model": "attacker",
     "maxHeight": 0.6,
     "minHeight": 0.5,
@@ -17,7 +17,16 @@
     "speedRotate": 0.05,
     "maxSpeed": 0.25
   },
-  "player": {
+  "base": {
+	"model": "base",
+    "maxHeight": 0.6,
+    "minHeight": 0.5,
+    "speedHeight": 0.0025,
+    "speed": 0.2,
+    "speedRotate": 0.05,
+    "maxSpeed": 0.25
+  },
+  "base_force": {
 	"model": "base",
     "maxHeight": 0.6,
     "minHeight": 0.5,

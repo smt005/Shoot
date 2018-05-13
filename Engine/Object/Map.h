@@ -10,6 +10,7 @@ using json = nlohmann::json;
 #include <memory>
 #include <vector>
 
+class AIInterface;
 class Object;
 class Glider;
 class Map;
@@ -45,6 +46,7 @@ public:
 	Object& addObject(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::mat4x4& mat = glm::mat4x4(1.0));
 	EffectObject& addEffect(const string& nameModel, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 
+	Glider& addGlider(const string& nameTemplate = string("base"), AIInterface* ai = nullptr, const glm::vec3& pos = vec3(0.0f), const string& name = string());
 	Glider& getGliderByName(const string& name);
 
 private:
@@ -52,5 +54,16 @@ private:
 
 public:
 	static void setCurrent(MapPtr map);
-	static MapPtr current();
+	inline static MapPtr currentPtr()
+	{
+		if (!_current)
+			_current = MapPtr(new Map());
+
+		return _current;
+	}
+
+	inline static Map& current()
+	{
+		return *currentPtr();
+	}
 };

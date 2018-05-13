@@ -283,7 +283,7 @@
   "gliders": [
     {
       "name": "Glider_00",
-      "model": "marker",
+      "template": "marker",
       "type": 2,
       "pos": [
         20,
@@ -293,7 +293,7 @@
     },
     {
       "name": "Glider_01",
-      "model": "Glider",
+      "template": "attacker",
       "type": 2,
       "pos": [
         -20,
@@ -303,7 +303,7 @@
     },
     {
       "name": "Glider_02",
-      "model": "Glider",
+      "template": "base",
       "type": 2,
       "pos": [
         20,
@@ -313,7 +313,7 @@
     },
     {
       "name": "Glider_03",
-      "model": "Glider",
+      "template": "attacker",
       "type": 2,
       "pos": [
         -10,
@@ -323,7 +323,7 @@
     },
     {
       "name": "Glider_player",
-      "model": "Glider",
+      "template": "base_force",
       "type": 2,
       "pos": [
         0,

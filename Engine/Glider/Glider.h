@@ -40,6 +40,12 @@ enum GliderCommand
 	BACK,
 	LEFT,
 	RIGHT,
+
+	FOWARD_VIEW,
+	BACK_VIEW,
+	LEFT_VIEW,
+	RIGHT_VIEW,
+
 	JUMP,
 	DUCK,
 	SHOOT,

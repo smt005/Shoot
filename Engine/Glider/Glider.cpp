@@ -66,14 +66,7 @@ void Glider::setLive(const bool live)
 	_live = live;
 
 	vec3 pos = getPos();
-
-	if (!Map::current())
-	{
-		LOG("LOG");
-		return;
-	}
-
-	Map::current()->addEffect("explodeSphere", pos);
+	Map::current().addEffect("explodeSphere", pos);
 }
 
 void Glider::action()
@@ -83,6 +76,8 @@ void Glider::action()
 	if (!_ai)
 		return;
 
+	_ai->action();
+
 	// Rotate
 	rotate();
 
@@ -90,26 +85,36 @@ void Glider::action()
 	vec3 vector(1.0f, 0.0f, 0.0);
 
 	// Move
-	if (_commands[GliderCommand::FOWARD])
+	if (_commands[GliderCommand::FOWARD_VIEW])
 	{
 		_moveVector += vector;
 	}
 
-	if (_commands[GliderCommand::BACK])
+	if (_commands[GliderCommand::BACK_VIEW])
 	{
 		_moveVector -= vector;
 	}
 
-	if (_commands[GliderCommand::LEFT])
+	if (_commands[GliderCommand::LEFT_VIEW])
 	{
 		_moveVector.x -= vector.y;
 		_moveVector.y += vector.x;
 	}
 
-	if (_commands[GliderCommand::RIGHT])
+	if (_commands[GliderCommand::RIGHT_VIEW])
 	{
 		_moveVector.x += vector.y;
 		_moveVector.y -= vector.x;
+	}
+
+	if (_commands[GliderCommand::FOWARD])
+	{
+		_moveVector = _lookVector;
+	}
+
+	if (_commands[GliderCommand::BACK])
+	{
+		_moveVector = -_lookVector;
 	}
 
 	if (_moveVector.x != 0.0f || _moveVector.y != 0.0f)
