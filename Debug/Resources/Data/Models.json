@@ -108,8 +108,8 @@
   },
   "Triangle": {
     "shape": "Models/Triangle.obj",
-    "texture": "Textures/Box.jpg",
-    "scale": 10
+    "texture": "Textures/Colors/white.png",
+    "scale": 5.0
   },
   "aim_plane_red": {
     "shape": "Models/Aim/aim_plane.obj",
@@ -126,7 +126,31 @@
   "explodeSphere": {
     "shape": "Models/Explodes/explodeSphere.obj",
     "texture": "Textures/Explodes/explodesOrange.png",
-	"scale": 0.5
+    "scale": 0.5
+  },
+  "sphereRed": {
+    "shape": "Models/Sample/geosphere_physic.obj",
+    "texture": "Textures/Colors/red.png",
+    "scale": 0.1
+  },
+  "sphereGreen": {
+    "shape": "Models/Sample/geosphere_physic.obj",
+    "texture": "Textures/Colors/green.png",
+    "scale": 0.1
+  },
+  "sphereBlue": {
+    "shape": "Models/Sample/geosphere_physic.obj",
+    "texture": "Textures/Colors/blue.png",
+    "scale": 0.1
+  },
+  "sphereBlack": {
+    "shape": "Models/Sample/geosphere_physic.obj",
+    "texture": "Textures/Colors/black.png",
+    "scale": 0.1
+  },
+  "sphereWhite": {
+    "shape": "Models/Sample/geosphere_physic.obj",
+    "texture": "Textures/Colors/white.png",
+    "scale": 0.1
   }
-  
 }

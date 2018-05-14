@@ -218,6 +218,11 @@ EffectObject& Map::addEffect(const string& nameModel, const glm::vec3& pos)
 	return effect;
 }
 
+Object& Map::getObjectByName(const string& name)
+{
+	return help::find(_objects, name);
+}
+
 Glider& Map::addGlider(const string& nameTemplate, AIInterface* ai, const glm::vec3& pos, const string& name)
 {
 	Glider &glider = help::add(_gliders, new Glider(nameTemplate, pos, name));

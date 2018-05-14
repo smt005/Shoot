@@ -43,6 +43,11 @@ void Object::setPos(const vec3& pos)
 	_matrix[3][0] = pos[0];
 	_matrix[3][1] = pos[1];
 	_matrix[3][2] = pos[2];
+
+	if (_physic.expired())
+		return;
+
+	_physic.lock()->setPos(pos);
 }
 
 void Object::setMatrix(const float *matrix)
@@ -66,7 +71,26 @@ void Object::setMatrix(const float *matrix)
 	_matrix[3][1] = matrix[13];
 	_matrix[3][2] = matrix[14];
 	_matrix[3][3] = matrix[15];
+
+	if (_physic.expired())
+		return;
+
+	_physic.lock()->setMatrix(matrix);
 }
+
+void Object::setModel(const string& nameModel)
+{
+	ModelPtr model = Model::getByName(nameModel);
+
+	if (model && _model != model)
+		_model = model;
+}
+
+void Object::setModel(ModelPtr& model)
+{
+	if (model && _model != model)
+		_model = model;
+};
 
 Model& Object::getModel()
 {

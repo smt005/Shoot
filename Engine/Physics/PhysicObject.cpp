@@ -28,6 +28,32 @@ mat4x4 PhysicObject::getWorldTransform()
 	return _mat;
 }
 
+void PhysicObject::setMatrix(const float* mat)
+{
+	if (!mat)
+		return;
+
+	_mat[0][0] = mat[0];
+	_mat[0][1] = mat[1];
+	_mat[0][2] = mat[2];
+	_mat[0][3] = mat[3];
+
+	_mat[1][0] = mat[4];
+	_mat[1][1] = mat[5];
+	_mat[1][2] = mat[6];
+	_mat[1][3] = mat[7];
+
+	_mat[2][0] = mat[8];
+	_mat[2][1] = mat[9];
+	_mat[2][2] = mat[10];
+	_mat[2][3] = mat[11];
+
+	_mat[3][0] = mat[12];
+	_mat[3][1] = mat[13];
+	_mat[3][2] = mat[14];
+	_mat[3][3] = mat[15];
+}
+
 void PhysicObject::setMatrix(const mat4x4& mat)
 {
 	_mat = mat;
@@ -35,9 +61,9 @@ void PhysicObject::setMatrix(const mat4x4& mat)
 
 void PhysicObject::setPos(const vec3& pos)
 {
-	_mat[0][0] = pos.x;
-	_mat[0][1] = pos.y;
-	_mat[0][2] = pos.z;
+	_mat[3][0] = pos.x;
+	_mat[3][1] = pos.y;
+	_mat[3][2] = pos.z;
 }
 
 void PhysicObject::setVector(const vec3& vec)
@@ -82,17 +108,15 @@ void PhysicObject::calculating()
 	unsigned short int _countIndex = _shape->_countIndex;
 	unsigned short* _aIndex = _shape->_aIndex;
 
-	//LOGI("LOG: [%s]\n", _shape->name().c_str());
+	_countPlane = _countIndex / 3;
+	_planes = new PhysicPlane[_countPlane];
+	int iPlane = 0;
 
 	for (int iIndex = 0; iIndex < _countIndex; iIndex += 3)
 	{
 		int i1 = _aIndex[iIndex];
 		int i2 = _aIndex[iIndex + 1];
 		int i3 = _aIndex[iIndex + 2];
-
-		/*LOGI("LOG: index [%d", i1);
-		LOGI(" %d ", i2);
-		LOGI(" %d]\n", i3);*/
 
 		{
 			PhysicPlane plane;
@@ -105,26 +129,8 @@ void PhysicObject::calculating()
 			if (l > _radius)
 				_radius = l;
 
-			/*LOGI("LOG: points [%f", p1[0]);
-			LOGI(" %f ", p1[1]);
-			LOGI(" %f] ", p1[2]);
-
-			LOGI(" [%f", p2[0]);
-			LOGI(" %f ", p2[1]);
-			LOGI(" %f] ", p2[2]);
-
-			LOGI(" [%f", p3[0]);
-			LOGI(" %f ", p3[1]);
-			LOGI(" %f]\n", p3[2]);*/
-
-			plane.set(p1, p2, p3);
-
-			/*LOGI("LOG: plane [%f", plane.a);
-			LOGI(" %f ", plane.b);
-			LOGI(" %f ", plane.c);
-			LOGI(" %f]\n", plane.d);*/
+			_planes[iPlane].set(p1, p2, p3);
+			++iPlane;
 		}
 	}
-
-	//LOG("LOG:");
 }

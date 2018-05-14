@@ -1,26 +1,36 @@
 #pragma once
 
-//#include <math.h>
-//#define _USE_MATH_DEFINES
-//#include <cmath>
-
 #include "../Common/IncludesMatem.h"
 using namespace glm;
 
 struct PhysicPlane
 {
 private:
+public:
+	vec3 _p1, _p2, _p3;
 	float a, b, c, d;
+	vec3 _normal;
 	float bottomValue;
+	float _area;
+
+	const float _error = 0.001f;
 
 public:
 	inline void set(const vec3& p1, const vec3& p2, const vec3& p3)
 	{
+		_p1 = p1;
+		_p2 = p2;
+		_p3 = p3;
+
 		set(glm::value_ptr(p1), glm::value_ptr(p2), glm::value_ptr(p3));
 	}
 
 	void set(const float* p1, const float* p2, const float* p3)
 	{
+		_p1 = vec3(p1[0], p1[1], p1[2]);
+		_p2 = vec3(p2[0], p2[1], p2[2]);
+		_p3 = vec3(p3[0], p3[1], p3[2]);
+
 		float x1 = p1[0];
 		float y1 = p1[1];
 		float z1 = p1[2];
@@ -45,6 +55,10 @@ public:
 
 		if (bottomValue == 0.0f)
 			bottomValue = 0.000001f;
+
+		_normal = normalize(vec3(a, b, c));
+
+		areaTriangle();
 	}
 
 	inline float dist(const float* pos)
@@ -69,6 +83,64 @@ public:
 		return vec3 (pos.x + vector.x * dist,
 					 pos.y + vector.y * dist,
 					 pos.z + vector.z * dist);
+	}
+
+	inline float distPointToPlane(const vec3& pos)
+	{
+		float dist = (a * pos.x + b * pos.y + c * pos.z + d) / bottomValue;
+		return dist;
+	}
+
+	float entryPointToPlane(const vec3& pos, const float dist, const float error = 0.0f)
+	{
+		float areaTriangles = 0.0f;
+
+		vec3 posOnPlane(pos);
+		vec3 vec(_normal * dist);
+		posOnPlane -= vec;
+
+		areaTriangles += areaTriangle(_p1, _p2, posOnPlane);
+		areaTriangles += areaTriangle(_p2, _p3, posOnPlane);
+		areaTriangles += areaTriangle(_p3, _p1, posOnPlane);
+
+		return areaTriangles <= (_area + error) ? true : false;
+	}
+
+	float entryPointToPlane(const vec3& pos)
+	{
+		float dist = distPointToPlane(pos);
+		
+		if (dist > 0)
+			return false;
+
+		vec3 posOnPlane(pos);
+		vec3 vec(_normal * dist);
+		posOnPlane -= vec;
+
+		float areaTriangles = 0.0f;
+		areaTriangles += areaTriangle(_p1, _p2, posOnPlane);
+		areaTriangles += areaTriangle(_p2, _p3, posOnPlane);
+		areaTriangles += areaTriangle(_p3, _p1, posOnPlane);
+
+		return areaTriangles <= _area ? true : false;
+	}
+
+	inline void areaTriangle()
+	{
+		_area = areaTriangle(_p1, _p2, _p3);
+		_area += _error;
+	}
+
+	inline float areaTriangle(const vec3& p1, const vec3& p2, const vec3& p3)
+	{
+		float AB = length(p1 - p2);
+		float BC = length(p2 - p3);
+		float CA = length(p3 - p1);
+
+		float p = (AB + BC + CA) / 2.0f;
+		float area = sqrt(p*(p - AB) * (p - BC) * (p - CA));
+		
+		return area;
 	}
 
 	//help

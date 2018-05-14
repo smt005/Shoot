@@ -65,12 +65,12 @@ void Camera::move(const CameraMove direct)
 		offset.z -= abs(speed);
 		break;
 
-	case CameraMove::HORIZONT:
+	case CameraMove::BACK_HORIZONT:
 		offset.x += (_vec.x * speed);
 		offset.y += (_vec.y * speed);
 		break;
 
-	case CameraMove::BACK_HORIZONT:
+	case CameraMove::HORIZONT:
 		offset.x -= (_vec.x * speed);
 		offset.y -= (_vec.y * speed);
 		break;

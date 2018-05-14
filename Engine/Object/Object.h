@@ -4,15 +4,13 @@
 #include "../Common/IncludesMatem.h"
 #include "../Common/json.h"
 #include "../Callback/Callback.h"
+#include "Model.h"
 
 #include <string>
 using namespace std;
 
 using json = nlohmann::json;
 using namespace glm;
-
-class Model;
-typedef std::shared_ptr<Model> ModelPtr;
 
 class Object;
 typedef std::shared_ptr<Object> ObjectPtr;
@@ -41,12 +39,19 @@ public:
 	vec3 getVector();
 	void getDataJson(json& dataJson);
 
+
+
 	inline void addPos(const vec3& offset) { _matrix[3][0] = _matrix[3][0] + offset.x; _matrix[3][1] = _matrix[3][1] + offset.y; _matrix[3][2] = _matrix[3][2] + offset.z; }
 
 	void setPos(const vec3& pos);
-	void setMatrix(const mat4x4 &matrix) { _matrix = matrix; };
+	inline void setMatrix(const mat4x4 &matrix) { _matrix = matrix; }
 	void setMatrix(const float *matrix);
 
+	void setModel(const string& nameModel);
+	void setModel(ModelPtr& model);
+
+	inline ModelPtr& getModelPtr() { return _model; }
+	inline string getModelName() { return _model ? _model->name() : ""; }
 	Model& getModel();
 	const float& getHeight();
 
@@ -54,6 +59,8 @@ public:
 	void setHeight(const float &height);
 	void setVector(const glm::vec3 &vector);
 	void setPhysic();
+
+	inline PhysicObjectWptr& getPhysic() { return _physic; }
 
 	// Virtual
 

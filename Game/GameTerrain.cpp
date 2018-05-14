@@ -223,6 +223,24 @@ bool GameTerrain::pressButton(void *data)
 		}
 	}
 
+	if (Callback::charButtonUp == 'P')
+	{
+		vec3 a(3.0f, 2.0f, 1.0f);
+		vec3 b(4.0f, 5.0f, 6.0f);
+		vec3 c(9.0f, 8.0f, 7.0f);
+
+		PhysicPlane plane;
+		plane.set(a, b, c);
+
+		float area = plane._area;
+
+		vec3 point(2.0f, 6.0f, 4.0f);
+		float dist = plane.distPointToPlane(point);
+
+		LOGI("LOG: area = %f", area);
+		LOGI(" dist = %f\n", dist);
+	}
+
 	return false;
 }
 

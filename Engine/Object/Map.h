@@ -46,6 +46,8 @@ public:
 	Object& addObject(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::mat4x4& mat = glm::mat4x4(1.0));
 	EffectObject& addEffect(const string& nameModel, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 
+	Object& getObjectByName(const string& name);
+
 	Glider& addGlider(const string& nameTemplate = string("base"), AIInterface* ai = nullptr, const glm::vec3& pos = vec3(0.0f), const string& name = string());
 	Glider& getGliderByName(const string& name);
 

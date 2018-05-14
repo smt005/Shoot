@@ -36,9 +36,11 @@ public:
 
 	inline const vec3& getSpeed() { return _speedVector; }
 	inline float getSpeedf() { return glm::length(_speedVector); }
-	inline const PhysicPlane* getPlanes() { return _planes; }
+	inline unsigned int getCountPlane() { return _countPlane; }
+	inline PhysicPlane* getPlanes() { return _planes; }
 	inline vec3 getPos() { return vec3(_mat[3][0], _mat[3][1], _mat[3][2]); }
 	
+	void setMatrix(const float* mat);
 	void setMatrix(const mat4x4& mat);
 	void setPos(const vec3& pos);
 	void setVector(const vec3& vec);

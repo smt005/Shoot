@@ -1,10 +1,1 @@
-{
-  "width": 1600,
-  "height": 1000,
-  "resolutionmonitor": true,
-  "fullscreen": false,
-  "game": {
-	"name": "GameTerrain",
-	"resourcesDir": "Resources"
-  }
-}
+{"fullscreen":false,"game":{"name":"GameTerrain","resourcesDir":"Resources"},"height":1000,"resolutionmonitor":true,"width":1600}
