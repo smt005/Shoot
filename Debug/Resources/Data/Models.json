@@ -4,11 +4,6 @@
     "texture": "Textures/Greed/Greed_00.png",
     "scale": 0.5
   },
-  "Plane_with_box_100": {
-    "shape": "Models/Plane_with_box_100.obj",
-    "texture": "Textures/Greed/Ambient.png",
-    "scale": 2
-  },
   "Terrain": {
     "shape": "Models/Terrain.obj",
     "texture": "Textures/Greed/Greed_00.png",
@@ -17,10 +12,6 @@
   "marker": {
     "shape": "Models/Gliders/Car.obj",
     "texture": "Textures/Car.jpg"
-  },
-  "Plane100": {
-    "shape": "Models/Plane100.obj",
-    "texture": "Textures/Greed/Ambient.png"
   },
   "PlaneFood": {
     "shape": "Models/Plane100.obj",
@@ -131,26 +122,36 @@
   "sphereRed": {
     "shape": "Models/Sample/geosphere_physic.obj",
     "texture": "Textures/Colors/red.png",
-    "scale": 0.1
+    "scale": 0.05
   },
   "sphereGreen": {
     "shape": "Models/Sample/geosphere_physic.obj",
     "texture": "Textures/Colors/green.png",
-    "scale": 0.1
+    "scale": 0.05
   },
   "sphereBlue": {
     "shape": "Models/Sample/geosphere_physic.obj",
     "texture": "Textures/Colors/blue.png",
-    "scale": 0.1
+    "scale": 0.05
   },
   "sphereBlack": {
     "shape": "Models/Sample/geosphere_physic.obj",
     "texture": "Textures/Colors/black.png",
-    "scale": 0.1
+    "scale": 0.05
   },
   "sphereWhite": {
     "shape": "Models/Sample/geosphere_physic.obj",
     "texture": "Textures/Colors/white.png",
-    "scale": 0.1
+    "scale": 0.05
+  },
+  "terrainSample": {
+    "shape": "Models/Sample/terrain.obj",
+    "texture": "Textures/Greed/Greed_00.png",
+    "scale": 2.0
+  },
+  "terrainExample": {
+    "shape": "Models/Terrain/terrain_example.obj",
+    "texture": "Textures/Greed/Greed_00.png",
+    "scale": 2.0
   }
 }

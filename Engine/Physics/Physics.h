@@ -17,7 +17,7 @@ public:
 	static void update();
 
 	static bool collision(PhysicObject* object);
-	static bool hint(PhysicObject* object, PhysicObject* target);
+	static bool hint(PhysicObject* object, PhysicObject* target, vec3& vector);
 
 	inline static void setGravity(const vec3& gravity) { _gravity = gravity; };
 	inline static const vec3& getGravity() { return _gravity; }

@@ -9,3 +9,5 @@ inline void LOG_SIZE_STRUCT(const char* name, const T& item)
 	int size = sizeof(item);
 	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "LOG: class: %s = %d\n", name, size);
 }
+
+//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "LOG: xxx: [ %f %f %f ]\n", xxx.x, xxx.y , xxx.z);

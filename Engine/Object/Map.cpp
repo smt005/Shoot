@@ -97,10 +97,10 @@ bool Map::create(const string &newName)
 
 void Map::setPhysic()
 {
-	/*for (auto object : _objects)
+	for (auto object : _objects)
 	{
 		object->setPhysic();
-	}*/
+	}
 
 	//Object& loc = help::find(_objects, "MapArena");
 	//loc.setPhysic();

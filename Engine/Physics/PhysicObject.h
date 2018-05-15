@@ -27,6 +27,20 @@ class PhysicObject final
 {
 	friend Physics;
 
+private:
+	bool _hasCollision = false;
+
+public:
+	bool getHasCollision()
+	{
+		return _hasCollision;
+	}
+
+	void setHasCollision(bool state)
+	{
+		_hasCollision = state;
+	}
+
 public:
 	PhysicObject();
 	~PhysicObject();
@@ -40,6 +54,8 @@ public:
 	inline PhysicPlane* getPlanes() { return _planes; }
 	inline vec3 getPos() { return vec3(_mat[3][0], _mat[3][1], _mat[3][2]); }
 	
+	inline void setSpeed(const vec3& speedVector) { _speedVector = speedVector; }
+	void setSpeed(const float speed);
 	void setMatrix(const float* mat);
 	void setMatrix(const mat4x4& mat);
 	void setPos(const vec3& pos);
@@ -54,6 +70,7 @@ private:
 	void calculating();
 
 private:
+public:
 	ShapePtr _shape;
 	PhysicType _type = PhysicType::NONE;
 	float _radius = 0.0f;

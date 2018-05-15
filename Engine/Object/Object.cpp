@@ -38,6 +38,22 @@ void Object::getDataJson(json& dataJson)
 	dataJson["pos"].push_back(_matrix[3][2]);
 }
 
+void Object::setSpeed(const vec3& speedVector)
+{
+	if (_physic.expired())
+		return;
+
+	_physic.lock()->setSpeed(speedVector);
+}
+
+void Object::setSpeed(const float speed)
+{
+	if (_physic.expired())
+		return;
+
+	_physic.lock()->setSpeed(speed);
+}
+
 void Object::setPos(const vec3& pos)
 {
 	_matrix[3][0] = pos[0];

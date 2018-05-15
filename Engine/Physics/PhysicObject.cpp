@@ -28,6 +28,12 @@ mat4x4 PhysicObject::getWorldTransform()
 	return _mat;
 }
 
+void PhysicObject::setSpeed(const float speed)
+{
+	vec3 vec = normalize(_speedVector);
+	_speedVector = vec * speed;
+}
+
 void PhysicObject::setMatrix(const float* mat)
 {
 	if (!mat)

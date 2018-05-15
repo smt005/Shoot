@@ -45,6 +45,21 @@ void GamePhysic::update()
 {
 	_mapPtr->action();
 
+	Object& trigger = _mapPtr->getObjectByName("trigger");
+	PhysicObjectWptr& physicObjectW = trigger.getPhysic();
+	if (physicObjectW.expired())
+		return;
+
+	PhysicObjectPtr physicObject = physicObjectW.lock();
+
+	if (physicObject->getHasCollision())
+	{
+		trigger.setModel("sphereRed");
+	}
+	else
+	{
+		trigger.setModel("sphereGreen");
+	}
 }
 
 void GamePhysic::draw()
@@ -60,8 +75,8 @@ void GamePhysic::initMap()
 	_mapPtr->setPhysic();
 	Physics::setGravity(vec3(0.0f, 0.0f, 0.0f));
 
-	Object& object = _mapPtr->getObjectByName("triangle");
-	object.setPhysic();
+	//Object& object = _mapPtr->getObjectByName("triangle");
+	//object.setPhysic();
 }
 
 
@@ -111,8 +126,24 @@ bool GamePhysic::pressButton(void *data)
 		return true;
 	}
 
-    if (Callback::charButtonUp == 'T')
+    if (Callback::charButtonUp == 'G')
 	{
+		vec3 g = Physics::getGravity();
+
+		if (g.z == 0.0f)
+		{
+			Physics::setGravity(vec3(0.0f, 0.0f, -0.00025f));
+		}
+		else
+		{
+			Physics::setGravity(vec3(0.0f, 0.0f, 0.0f));
+
+			Object& trigger = _mapPtr->getObjectByName("trigger");
+			vec3 pos = trigger.getPos();
+			pos.z = 0.1f;
+			trigger.setPos(pos);
+			trigger.setSpeed(0.0f);
+		}
 	}
 
 	if (Callback::charButtonUp == 'P')
@@ -158,7 +189,7 @@ void GamePhysic::controllCamera()
 	if (Callback::key['O'])
 		return;
 
-	float speedCamera = Callback::key[VK_SHIFT] ? 0.125f : speedCamera = 0.25f;
+	float speedCamera = Callback::key[VK_SHIFT] ? 0.06125f : speedCamera = 0.125f;
 	Camera::current.setSpeed(speedCamera);
 
 	if (Callback::key['Q'])
@@ -250,19 +281,36 @@ void GamePhysic::controllObject()
 
 	//---
 
-	Object& triangle = _mapPtr->getObjectByName("triangle");
-
-	PhysicObjectWptr& physicObjectW = triangle.getPhysic();
+	/*PhysicObjectWptr& physicObjectW = trigger.getPhysic();
 	if (physicObjectW.expired())
 		return;
 
 	PhysicObjectPtr physicObject = physicObjectW.lock();
 
-	int countPlanes = physicObject->getCountPlane();
+	if (physicObject->getHasCollision())
+	{
+		trigger.setModel("sphereRed");
+	}
+	else
+	{
+		trigger.setModel("sphereGreen");
+	}*/
+
+	//---
+
+	/*Object& triangle = _mapPtr->getObjectByName("triangle");
+
+	PhysicObjectWptr& physicObjectW = triangle.getPhysic();
+	if (physicObjectW.expired())
+		return;
+
+	PhysicObjectPtr physicObject = physicObjectW.lock();*/
+
+	/*int countPlanes = physicObject->getCountPlane();
 	PhysicPlane* planes = physicObject->getPlanes();
 
 	if (countPlanes == 0 || !planes)
-		return;
+		return;*/
 
 	/*float dist = planes[0].distPointToPlane(pos);
 
@@ -292,15 +340,24 @@ void GamePhysic::controllObject()
 	LOG("\n");
 	*/
 
-	if (planes[0].entryPointToPlane(pos))
+	/*bool entry(false);
+
+	for (int i = 0; i < countPlanes; ++i)
+	{
+		if (planes[i].entryPointToPlane(pos))
+		{
+			entry = true;
+			break;
+		}
+	}
+
+	if (entry)
 	{
 		trigger.setModel("sphereRed");
 	}
 	else
 	{
 		trigger.setModel("sphereGreen");
-	}
-
-
+	}*/
 }
 

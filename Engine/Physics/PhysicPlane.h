@@ -1,4 +1,7 @@
 #pragma once
+//#include <Windows.h>
+//#include <string>
+using namespace std;
 
 #include "../Common/IncludesMatem.h"
 using namespace glm;
@@ -106,12 +109,15 @@ public:
 		return areaTriangles <= (_area + error) ? true : false;
 	}
 
-	float entryPointToPlane(const vec3& pos)
+	bool entryPointToPlane(const vec3& pos)
 	{
 		float dist = distPointToPlane(pos);
 		
 		if (dist > 0)
+		{
+			//_CrtDbgReport(0, NULL, 0, NULL, "LOG: dist: %f = %s\n", dist, "NO");
 			return false;
+		}
 
 		vec3 posOnPlane(pos);
 		vec3 vec(_normal * dist);
@@ -122,7 +128,10 @@ public:
 		areaTriangles += areaTriangle(_p2, _p3, posOnPlane);
 		areaTriangles += areaTriangle(_p3, _p1, posOnPlane);
 
-		return areaTriangles <= _area ? true : false;
+		bool res = areaTriangles <= _area ? true : false;
+		//_CrtDbgReport(0, NULL, 0, NULL, "LOG: dist: %f - %fm %f = %s\n", dist, areaTriangles,  _area, (res ? "yes" : "NO"));
+		return res;
+//		return areaTriangles <= _area ? true : false;
 	}
 
 	inline void areaTriangle()
@@ -141,6 +150,25 @@ public:
 		float area = sqrt(p*(p - AB) * (p - BC) * (p - CA));
 		
 		return area;
+	}
+
+	vec3 reflect(const vec3& vectorTarget, const float elasticity = 1.0f)
+	{
+		if (length(vectorTarget) == 0.0f)
+			return vec3(0.0f);
+
+		float speed = length(vectorTarget);
+		vec3 vector = normalize(vectorTarget);
+
+		float dot = glm::dot(_normal, vector);
+		vec3 valueVector = _normal;
+		valueVector *= dot;
+		valueVector *= (-2.0f);
+		vec3 v(vector + valueVector);
+		v *= elasticity;
+		v *= speed;
+
+		return v;
 	}
 
 	//help

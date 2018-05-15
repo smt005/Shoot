@@ -43,6 +43,9 @@ public:
 
 	inline void addPos(const vec3& offset) { _matrix[3][0] = _matrix[3][0] + offset.x; _matrix[3][1] = _matrix[3][1] + offset.y; _matrix[3][2] = _matrix[3][2] + offset.z; }
 
+	void setSpeed(const vec3& speedVector);
+	void setSpeed(const float speed);
+
 	void setPos(const vec3& pos);
 	inline void setMatrix(const mat4x4 &matrix) { _matrix = matrix; }
 	void setMatrix(const float *matrix);
