@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "../App/App.h"
+#include "../App/File.h"
 #include "../Engine/Callback/Callback.h"
 #include "../Engine/Physics/PhysicPlane.h"
 
@@ -10,10 +11,85 @@
 
 using namespace glm;
 
+#define FILE_NAME_CAMERA_DATA "Data/Camera.json"
+
 Camera::Camera() :
 	_calcFrustum(false)
 {
 	setDefault();
+}
+
+bool Camera::load(const std::string& name)
+{
+	char *dataString = File::loadText(FILE_NAME_CAMERA_DATA);
+	if (!dataString)
+		return false;
+
+	json dataAll = json::parse(dataString);
+
+	if (dataAll[name].is_null())
+		return false;
+
+	json data = dataAll[name];
+
+	function<void(const string&, vec3&, const vec3&)> readVec = [data](const string& key, vec3& pos, const vec3& defaultPos)
+	{
+		json posData = data[key];
+
+		if (posData.is_array())
+		{
+			int index = 0;
+
+			for (auto& item : posData)
+			{
+				float value = item.is_number_float() ? item.get<float>() : 0.0f;
+				pos[index] = value;
+
+				++index;
+				if (index > 2)
+					break;
+			}
+		}
+	};
+
+	readVec("eye", _eye, vec3(1.0f));
+	readVec("target", _target, vec3(0.0f));
+
+	_matView = lookAt(_eye, _target, vec3(0.0f, 0.0f, 1.0f));
+	makeMatProjectView();
+
+	return true;
+}
+
+void Camera::save(const std::string& name)
+{
+	char *dataString = File::loadText(FILE_NAME_CAMERA_DATA);
+	if (!dataString)
+		return;
+
+	json dataAll = json::parse(dataString);
+
+	{
+		json posData;
+
+		posData[0] = _eye.x;
+		posData[1] = _eye.y;
+		posData[2] = _eye.z;
+
+		dataAll[name]["eye"] = posData;
+	}
+
+	{
+		json posData;
+
+		posData[0] = _target.x;
+		posData[1] = _target.y;
+		posData[2] = _target.z;
+
+		dataAll[name]["target"] = posData;
+	}
+
+	File::saveText(FILE_NAME_CAMERA_DATA, dataAll.dump().c_str());
 }
 
 void Camera::setPos(const glm::vec3& pos)

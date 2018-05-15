@@ -39,6 +39,7 @@ bool GamePhysic::init()
 
 void GamePhysic::save()
 {
+	Camera::current.save();
 }
 
 void GamePhysic::update()
@@ -90,7 +91,9 @@ void GamePhysic::initDraw()
 	Camera::current.setDefault();
 	Camera::current.setSpeed(1.0f);
 
-	Camera::current.setLookAt(vec3(-5.624f, -2.862f, -0.1f), vec3(30.2f, 2.86f, 0.25f));
+	//Camera::current.setLookAt(vec3(-5.624f, -2.862f, -0.1f), vec3(30.2f, 2.86f, 0.25f));
+
+	Camera::current.load();
 
 	/*Camera::current.setDist(5.0f);
 	Camera::current.setFromEye(true);

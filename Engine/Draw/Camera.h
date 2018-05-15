@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <glm\vec3.hpp>
 #include <glm\mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -24,6 +26,9 @@ class Camera final
 {
 public:
 	Camera();
+
+	bool load(const std::string& name = "default");
+	void save(const std::string& name = "default");
 
 	inline const glm::mat4x4& getMatProject()		{ return _matProject; };
 	inline const glm::mat4x4& getMatView()			{ return _matView; };
