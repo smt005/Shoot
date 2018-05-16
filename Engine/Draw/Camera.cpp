@@ -55,8 +55,7 @@ bool Camera::load(const std::string& name)
 	readVec("eye", _eye, vec3(1.0f));
 	readVec("target", _target, vec3(0.0f));
 
-	_matView = lookAt(_eye, _target, vec3(0.0f, 0.0f, 1.0f));
-	makeMatProjectView();
+	setLookAt(_eye, _target);
 
 	return true;
 }

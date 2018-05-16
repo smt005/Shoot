@@ -89,7 +89,8 @@ bool PhysicPlane::entryPointToPlane(vec3& pos)
 
 vec3 PhysicPlane::reflect(const vec3& vectorTarget, const float elasticity)
 {
-	if (length(vectorTarget) == 0.0f)
+	//if (length(vectorTarget) == 0.0f)
+	if (length(vectorTarget) < 0.01f)
 		return vec3(0.0f);
 
 	float speed = length(vectorTarget);

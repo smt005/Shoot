@@ -16,7 +16,7 @@ public:
 	float bottomValue;
 	float _area;
 
-	const float _error = 0.001f;
+	const float _error = 0.1f;
 
 public:
 	inline void set(const vec3& p1, const vec3& p2, const vec3& p3)
@@ -48,7 +48,7 @@ public:
 	inline void areaTriangle()
 	{
 		_area = areaTriangle(_p1, _p2, _p3);
-		_area += _error;
+		_area += _area * _error;
 	}
 
 	inline float areaTriangle(const vec3& p1, const vec3& p2, const vec3& p3)

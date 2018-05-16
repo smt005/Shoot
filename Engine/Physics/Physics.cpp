@@ -91,7 +91,7 @@ bool Physics::collision(PhysicObject* object)
 
 		if (entry)
 		{
-			object->setSpeed(vector);
+			//object->setSpeed(vector);
 			//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "LOG: YES: [ %f %f %f ] pos [ %f %f %f ]\n", object->_speedVector.x, object->_speedVector.y, object->_speedVector.z, object->_mat[3][0], object->_mat[3][1], object->_mat[3][2]);
 			object->setHasCollision(true);
 		}
@@ -121,6 +121,7 @@ bool Physics::hint(PhysicObject* object, PhysicObject* target, vec3& vector)
 		{
 			object->setPos(pos_);
 			vector = planes[i].reflect(vector, 0.9f);
+			object->setSpeed(vector);
 			return true;
 		}
 	}

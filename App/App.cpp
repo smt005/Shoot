@@ -109,22 +109,12 @@ int App::execution(const char* exeFile)
 		return false;
 	}
 
-	{
-		int xpos, ypos;
-		glfwGetWindowPos(_window, &xpos, &ypos);
-
-		int width, height;
-		glfwGetWindowSize(_window, &width, &height);
-
-		SetCursorPos((xpos + width / 2), (ypos + height / 2));
-	}
-
 	Game* game = Game::getGame();
 	game->init();
 
 	while (!glfwWindowShouldClose(_window))
 	{
-		actionOnFrame();
+		update();
 
 		game->update();
 		game->draw();
@@ -139,7 +129,7 @@ int App::execution(const char* exeFile)
 }
 
 
-void App::actionOnFrame()
+void App::update()
 {
 	POINT mousePos;
 	GetCursorPos(&mousePos);

@@ -21,7 +21,7 @@ public:
 	static glm::vec2 pos();
 
 private:
-	static void actionOnFrame();
+	static void update();
 
 	static void cursorPositionCallback(GLFWwindow* Window, double x, double y);
 	static void mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mods);

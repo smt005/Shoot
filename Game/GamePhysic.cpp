@@ -18,6 +18,7 @@
 #include "../Engine/Common/Help.h"
 #include "../Engine/Common/IncludesMatem.h"
 
+#include "../Engine/Common/JsonHelp.h"
 #include "../Engine/Common/Log.h"
 
 GamePhysic::GamePhysic()
@@ -135,7 +136,7 @@ bool GamePhysic::pressButton(void *data)
 
 		if (g.z == 0.0f)
 		{
-			Physics::setGravity(vec3(0.0f, 0.0f, -0.00025f));
+			Physics::setGravity(vec3(0.0f, 0.0f, -0.0025f));
 		}
 		else
 		{

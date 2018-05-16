@@ -12,7 +12,6 @@ private:
 	bool _resolutionmonitor = true;
 	bool _fullscreen = false;
 
-	string _resourcesDir;
 	string _nameGame = "GameTerrain";
 
 public:
@@ -21,7 +20,6 @@ public:
 	bool hasResolutionmonitor() { return _resolutionmonitor; }
 	bool hasFullscreen() { return _fullscreen; };
 
-	const string& getResourcesDir() { return _resourcesDir; };
 	const string& getNameGame() { return _nameGame; };
 
 public:
