@@ -8,7 +8,7 @@
 #include "Json.h"
 using json = nlohmann::json;
 
-class JsonHepl
+class JsonHelp
 {
 public:
 	static bool load(json& jsonData, const std::string& fileName)
@@ -25,7 +25,7 @@ public:
 
 	inline static bool has(json& jsonData, const string& key)
 	{
-		return jsonData["game"].is_null() ? true : false;
+		return jsonData[key].is_null() ? true : false;
 	}
 	
 	inline static std::string getString(json& jsonData, const std::string& key, const std::string& defaultText = std::string())
@@ -36,6 +36,11 @@ public:
 	inline static int getInt(json& jsonData, const std::string& key, const int defaultValue = 0)
 	{
 		return jsonData[key].is_number_integer() ? jsonData[key].get<int>() : defaultValue;
+	}
+
+	inline static unsigned int getUnsignedInt(json& jsonData, const std::string& key, const unsigned int defaultValue = 0)
+	{
+		return jsonData[key].is_number_unsigned() ? jsonData[key].get<unsigned int>() : defaultValue;
 	}
 
 	inline static float getFloat(json& jsonData, const std::string& key, const float defaultValue = 0.0f)

@@ -15,6 +15,7 @@ class Physics;
 enum class PhysicType
 {
 	NONE,
+	POINT,
 	CONVEX,
 	TERRAIN
 };

@@ -8,6 +8,7 @@
 #include "../Physics/Physics.h"
 #include "../../App/File.h"
 #include "../Common/Help.h"
+#include "../Common/JsonHelp.h"
 
 Map::~Map()
 {
@@ -21,24 +22,20 @@ bool Map::create(const string &newName)
 	setName(newName);
 
 	string fileName = "Map/" + name() + ".json";
-	char* dataChar = File::loadText(fileName);
-
-	if (!dataChar)
+	
+	json data;
+	if (!JsonHelp::load(data, fileName))
 		return false;
 
-	json data = json::parse(dataChar);
-	delete[] dataChar;
-
-	_area = data["area"].is_null() ? 10.0f : data["area"].get<float>();
+	_area = JsonHelp::getFloat(data, "area", 1.0f);
 
 	for (auto element : data["objects"])
 	{
-		const string &name = element["name"].is_string() ? element["name"] : "";
-		const string &modelName = element["model"].is_string() ? element["model"] : "default";
-		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
+		const string &name = JsonHelp::getString(element, "name");
+		const string &modelName = JsonHelp::getString(element, "model");
 
 		PhysicType physicType = PhysicType::NONE;
-		const string& physicTypeString = element["physicType"].is_string() ? element["physicType"] : "none";
+		const string& physicTypeString = JsonHelp::getString(element, "physicType");
 
 		if (physicTypeString == "convex")
 		{
@@ -64,12 +61,11 @@ bool Map::create(const string &newName)
 
 	for (auto element : data["gliders"])
 	{
-		const string &name = element["name"].is_string() ? element["name"] : "";
-		const string &templateName = element["template"].is_string() ? element["template"] : "base";
-		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
+		const string &name = JsonHelp::getString(element, "name");
+		const string &templateName = JsonHelp::getString(element, "template", "base");
 
 		PhysicType physicType = PhysicType::NONE;
-		const string& physicTypeString = element["physicType"].is_string() ? element["physicType"] : "none";
+		const string& physicTypeString = JsonHelp::getString(data, "physicType");
 
 		if (physicTypeString == "convex")
 		{

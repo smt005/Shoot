@@ -8,14 +8,14 @@ void AppConfig::load()
 	string fileName = "Data/Setting.json";
 	
 	json data;
-	if (!JsonHepl::load(data, fileName))
+	if (!JsonHelp::load(data, fileName))
 		return;
 
-	_height = JsonHepl::getInt(data, "height", 480);
-	_width = JsonHepl::getInt(data, "width", 640);
+	_height = JsonHelp::getInt(data, "height", 480);
+	_width = JsonHelp::getInt(data, "width", 640);
 
-	_resolutionmonitor = JsonHepl::getBool(data, "resolutionmonitor", true);
-	_fullscreen = JsonHepl::getBool(data, "fullscreen", false);
+	_resolutionmonitor = JsonHelp::getBool(data, "resolutionmonitor", true);
+	_fullscreen = JsonHelp::getBool(data, "fullscreen", false);
 
 
 	if (!data["game"].is_null())
